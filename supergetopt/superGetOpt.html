@@ -1,236 +1,300 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
 <HEAD>
 	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
 	<TITLE></TITLE>
-	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.0  (Linux)">
+	<META NAME="GENERATOR" CONTENT="LibreOffice 3.5  (Linux)">
 	<META NAME="AUTHOR" CONTENT="Anthony Russo">
-	<META NAME="CREATED" CONTENT="20071108;11022700">
-	<META NAME="CHANGEDBY" CONTENT="Anthony Russo">
-	<META NAME="CHANGED" CONTENT="20071108;11533700">
+	<META NAME="CREATED" CONTENT="20071108;12020000">
+	<META NAME="CHANGEDBY" CONTENT="Anthony P. Russo">
+	<META NAME="CHANGED" CONTENT="20071108;13070000">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { margin: 0.79in }
+		P { margin-bottom: 0.08in; direction: ltr; color: #000000; widows: 0; orphans: 0 }
+		P.western { font-family: "DejaVu Serif", serif; font-size: 12pt; so-language: en-US }
+		P.cjk { font-family: "DejaVu Sans"; font-size: 12pt }
+		P.ctl { font-family: "Tahoma", sans-serif; font-size: 12pt; so-language: zxx }
+		A.western:visited { so-language: en-US }
+		A.cjk:visited { so-language: zh-CN }
+		A.ctl:visited { so-language: hi-IN }
+	-->
+	</STYLE>
 </HEAD>
-<BODY LANG="en-US" DIR="LTR">
-<DL>
-	<DT><BR>
-	</DT><DT>
-	<FONT FACE="Arial"><FONT SIZE=5><B>SuperGetOpt Overview</B></FONT></FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial">The supergetopt library makes it very easy to
-	handle all kinds of command-line arguments in a printf()-style way.
-	All types of command-line arguments are supported and all
-	user-supplied values are checked for type validity.</FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial">If you have been searching for an easy-to-use,
-	flexible, portable command-line and general use parser, this is it!</FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial"><I><B>A Simple Example:</B></I></FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Courier New"><FONT SIZE=2>int main( int argc, char
-	*argv[] )</FONT></FONT></DT><DT>
-	<FONT FACE="Courier New"><FONT SIZE=2>{</FONT></FONT></DT><DT>
-	    <FONT FACE="Courier New"><FONT SIZE=2>int n, argErr;</FONT></FONT></DT><DT>
-	    <FONT FACE="Courier New"><FONT SIZE=2>float yourFloat;</FONT></FONT></DT><DT>
-	    <FONT FACE="Courier New"><FONT SIZE=2>int yourInt;</FONT></FONT></DT><DT>
-	    <FONT FACE="Courier New"><FONT SIZE=2>char
-	yourString[MAX_STRING];</FONT></FONT></DT><DD>
-	<BR>
-	</DD><DT>
-	    <FONT FACE="Courier New"><FONT SIZE=2>n = superGetOpt( argc,
-	argv, &amp;argErr, </FONT></FONT>
-	</DT><DT>
-	                     <FONT FACE="Courier New"><FONT SIZE=2>&quot;-YourFlag
-	%f%s%d&quot;, &amp;yourFloat, yourString, &amp;yourInt,</FONT></FONT></DT><DT>
-	                     <FONT FACE="Courier New"><FONT SIZE=2>NULL );</FONT></FONT></DT><DD>
-	<BR>
-	</DD><DT>
-	    <FONT FACE="Courier New"><FONT SIZE=2>return(n);</FONT></FONT></DT><DT>
-	<FONT FACE="Courier New"><FONT SIZE=2>}</FONT></FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial">It's that easy. No header files to create, no
-	argument order to concern yourself with.</FONT></DT><DT>
-	<FONT FACE="Arial">Please read the testSuperGetOpt.c example and
-	you'll fully understand.</FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial"><FONT SIZE=5><B>Function usage:</B></FONT></FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial"><I><B>The superGetOpt() function definition:</B></I></FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial">This function has the following syntax for the
-	three main types of command line argument handling: fixed, variable,
-	and argless:</FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Courier New">int superGetOpt( int argc, char *argv[],
-	int *argErr,</FONT></DT><DT>
-	                 <FONT FACE="Courier New">char *fixedFormat, *arg1,
-	*arg2,...,</FONT></DT><DT>
-	                 <FONT FACE="Courier New">char *varFormat,
-	argArray[], int *numInArray,</FONT></DT><DT>
-	                 <FONT FACE="Courier New">char *argLessFormat, int
-	*wasThisFlagOnCmdLine,</FONT></DT><DT>
-	                 <FONT FACE="Courier New">... // arbitrarily long
-	list of format/argPtr pairs</FONT></DT><DT>
-	                 <FONT FACE="Courier New">NULL); // NULL is used to
-	terminate the arg list</FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial">where &quot;<FONT FACE="Courier New">fixedFormat</FONT>&quot;
-	is an arbitrary keyword like &quot;--help&quot; or &quot;+debug&quot;
-	or &quot;display&quot; plus</FONT></DT><DT>
-	<FONT FACE="Arial">a set of printf()-like % formats. “<FONT FACE="Courier New">varFormat</FONT>”
-	is denoted by using a '*' before a single %, implying that an
-	arbitrarily long list of values of the specified format are expected
-	(see below). </FONT>
-	</DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial">Allowable formats are: </FONT>
-	</DT><DT>
-	<BR><BR>
-	</DT></DL>
+<BODY LANG="en-US" TEXT="#000000" DIR="LTR">
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif"><FONT SIZE=5><B>SuperGetOpt
+Overview</B></FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif">The
+supergetopt library makes it very easy to handle all kinds of
+command-line arguments in a printf()-style way. All types of
+command-line arguments are supported and all user-supplied values are
+checked for type validity.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif">If
+you have been searching for an easy-to-use, flexible, portable
+command-line and general use parser, this is it!</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif"><I><B>A
+Simple Example:</B></I></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>int
+main( int argc, char *argv[] )</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>{</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in">    <FONT FACE="Courier New, monospace"><FONT SIZE=2>int
+n, argErr;</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in">    <FONT FACE="Courier New, monospace"><FONT SIZE=2>float
+yourFloat;</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in">    <FONT FACE="Courier New, monospace"><FONT SIZE=2>int
+yourInt;</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in">    <FONT FACE="Courier New, monospace"><FONT SIZE=2>char
+yourString[MAX_STRING];</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>	</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in">    <FONT FACE="Courier New, monospace"><FONT SIZE=2>n
+= superGetOpt( argc, argv, &amp;argErr, </FONT></FONT>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in">                    
+<FONT FACE="Courier New, monospace"><FONT SIZE=2>&quot;-YourFlag
+%f%s%d&quot;, &amp;yourFloat, yourString, &amp;yourInt, “This is
+help info for -YourFlag”,</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in">                    
+<FONT FACE="Courier New, monospace"><FONT SIZE=2>NULL );</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in">    <FONT FACE="Courier New, monospace"><FONT SIZE=2>return(n);</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace"><FONT SIZE=2>}</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif">It's
+that easy. No header files to create, no argument order to concern
+yourself with.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif">Please
+read the testSuperGetOpt.c example and you'll fully understand.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif"><FONT SIZE=5><B>Function
+usage:</B></FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif"><I><B>The
+superGetOpt() function definition:</B></I></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif">This
+function has the following syntax for the three main types of command
+line argument handling: fixed, variable, and argless:</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace">int
+superGetOpt( int argc, char *argv[], int *argErr,</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in">                 <FONT FACE="Courier New, monospace">char
+*fixedFormat, *arg1, *arg2,...,”Help fixed flag”,</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in">                 <FONT FACE="Courier New, monospace">char
+*varFormat, argArray[], int *numInArray, “Help var flag”,</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in">                 <FONT FACE="Courier New, monospace">char
+*argLessFormat, int *wasThisFlagOnCmdLine, “Help flag with no
+args”,</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in">                 <FONT FACE="Courier New, monospace">...
+<FONT COLOR="#008000">// arbitrarily long list of format/argPtr pairs</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in">                 <FONT FACE="Courier New, monospace">NULL);
+<FONT COLOR="#339966">// NULL is used to terminate the arg list</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif">where
+&quot;</FONT><FONT FACE="Courier New, monospace">fixedFormat</FONT><FONT FACE="Arial, sans-serif">&quot;
+is an arbitrary keyword like &quot;--help&quot; or &quot;+debug&quot;
+or &quot;display&quot; plus</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif">a
+set of printf()-like % formats. “</FONT><FONT FACE="Courier New, monospace">varFormat</FONT><FONT FACE="Arial, sans-serif">”
+is denoted by using a '*'  before a single %, implying that an
+arbitrarily long list of values of the specified format are expected
+(see below). </FONT>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif">Allowable
+formats are: </FONT>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
 <UL>
-	<LI>
-	<FONT FACE="Arial">%d integer</FONT><LI>
-	<FONT FACE="Arial">%hd short int</FONT><LI>
-	<FONT FACE="Arial">%c character</FONT><LI>
-	<FONT FACE="Arial">%f float</FONT><LI>
-	<FONT FACE="Arial">%lf double</FONT><LI><P>
-	<FONT FACE="Arial">%s char * (string)</FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0in">        <FONT FACE="Arial, sans-serif">%d
+	  integer</FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0in">        <FONT FACE="Arial, sans-serif">%hd
+	short int</FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0in">        <FONT FACE="Arial, sans-serif">%c
+	  character</FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0in">        <FONT FACE="Arial, sans-serif">%f
+	  float</FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0in">        <FONT FACE="Arial, sans-serif">%lf
+	 double</FONT></P>
+	<LI><P CLASS="western" STYLE="margin-bottom: 0in">        <FONT FACE="Arial, sans-serif">%s
+	 char * (string)</FONT></P>
 </UL>
-<DL>
-	<DD><BR>
-	</DD><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial"><I><B>The <FONT FACE="Courier New">superGetOpt</FONT>()
-	function usage:</B></I></FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Courier New">int superGetOpt( argc, argv, &amp;argErr,</FONT></DT><DT>
-	                 <FONT FACE="Courier New">&quot;fixedKeyword %X %Y
-	%Z&quot;, &amp;argX, &amp;argY, &amp;argZ,</FONT></DT><DT>
-	                 <FONT FACE="Courier New">&quot;varKeyword * %X&quot;,
-	argArrayX, &amp;numInArrayX,</FONT></DT><DT>
-	                 <FONT FACE="Courier New">&quot;argLessKeyword&quot;,
-	&amp;wasThisFlagOnCmdLine,</FONT></DT><DT>
-	                 <FONT FACE="Courier New">... // arbitrarily long
-	list of format/argPtr pairs</FONT></DT><DT>
-	                 <FONT FACE="Courier New">NULL); // NULL is used to
-	terminate the arg list</FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial">where <FONT FACE="Courier New">%X, %Y </FONT>and
-	<FONT FACE="Courier New">%Z</FONT> are any of the above allowable
-	format options.</FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial"><I><B>Fixed number of arguments to a flag:</B></I></FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial">If '*' is not specified, the number arguments to
-	a given flag is the number of %’s in the format (fixed). There
-	must be a matching number of argument pointers passed to
-	<FONT FACE="Courier New">superGetOpt</FONT>() directly after the
-	format.</FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial"><I><B>Variable number of arguments to a given
-	flag:</B></I></FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial">If '*' is specified prior to the ‘%’, then
-	only one '%' may appear in the format. In this case, <FONT FACE="Courier New">argArray</FONT>
-	is a pointer to an array large enough to hold <FONT FACE="Courier New">numInArray</FONT>
-	values, which must be set prior to the <FONT FACE="Courier New">superGetOpt</FONT>()
-	call. When <FONT FACE="Courier New">superGetOpt</FONT> returns,
-	<FONT FACE="Courier New">numInArray</FONT> will be set to the number
-	of user supplied arguments, and <FONT FACE="Courier New">argArray</FONT>
-	will be filled with those user-supplied values.</FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial"><I><B>Flags without any arguments:</B></I></FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial">If the ‘%’ format is not specified, then no
-	arguments are expected to your flag (e.g. &quot;--help&quot;), and
-	<FONT FACE="Courier New">wasThisFlagOnCmdLine</FONT> will be <FONT FACE="Courier New">False</FONT>
-	unless the user supplied the flag on the command line.</FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial"><I><B>Return values:</B></I></FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial">These are defined in <FONT FACE="Courier New">supergetopt.h</FONT>
-	as follows:</FONT></DT><DT>
-	<BR>
-	</DT><DD>
-	<FONT FACE="Courier New">#define SG_ERR_TOO_MANY_OPTIONS -2</FONT></DD><DD>
-	<FONT FACE="Courier New">#define SG_ERROR_BAD_FORMAT -3</FONT></DD><DD>
-	<FONT FACE="Courier New">#define SG_ERROR_BAD_FORMAT_TYPE -4</FONT></DD><DD>
-	<FONT FACE="Courier New">#define SG_ERROR_BAD_ARGTYPE -5</FONT></DD><DD>
-	<FONT FACE="Courier New">#define SG_ERROR_BAD_VARARGTYPE -6</FONT></DD><DD>
-	<FONT FACE="Courier New">#define SG_ERROR_INCORRECT_ARG -7</FONT></DD><DD>
-	<FONT FACE="Courier New">#define SG_ERROR_MISSING_ARG -8</FONT></DD><DD>
-	<FONT FACE="Courier New">#define SG_ERROR_NO_FORMATS -9</FONT></DD><DD>
-	<FONT FACE="Courier New">#define SG_ERROR_MIXED_TYPES_IN_VAR -10</FONT></DD><DD>
-	<FONT FACE="Courier New">#define SG_ERROR_ZERO_LEN_OPTION -11</FONT></DD><DD>
-	<FONT FACE="Courier New">#define SG_ERROR_TOO_MANY_ARGS -12</FONT></DD><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial">In the case of an error, *<FONT FACE="Courier New">argErr</FONT>
-	will be the argument number where the problem occurred. If there is
-	not any error then <FONT FACE="Courier New">argErr</FONT> will be 0.</FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial"><I><B>The <FONT FACE="Courier New">superParse</FONT>()
-	function:</B></I></FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial">This function is exactly the same as
-	<FONT FACE="Courier New">superGetOpt</FONT>() except that <FONT FACE="Courier New">argv[0]</FONT>
-	is not ignored. This makes it useful for parsing config files where
-	each line can be turned into <FONT FACE="Courier New">argv, argc</FONT>
-	format, such as with <FONT FACE="Courier New">xargs</FONT>. </FONT>
-	</DT><DT>
-	<FONT FACE="Arial"><I>E.g.</I> <FONT FACE="Courier New">cat
-	configFile | xargs testSuperParse</FONT></FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial"><FONT SIZE=5><B>Portability</B></FONT></FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial">This library conforms to ANSI C specs and should
-	be completely portable. It has been tested on Unix systems (Linux,
-	SunOS, Solaris) and Windows XP.</FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial"><FONT SIZE=5><B>History</B></FONT></FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial">I've been using it for years!</FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial">SuperGetOpt-1.0: Release February 3, 1999.</FONT></DT><DT>
-	<FONT FACE="Arial">SuperGetOpt-2.0: Release November 7, 2007.</FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial"><FONT SIZE=5><B>Known Bugs</B></FONT></FONT></DT><DT>
-	<BR>
-	</DT><DT>
-	<FONT FACE="Arial">None known. Please report bugs to the author.</FONT></DT><DD><P>
-	<BR><BR>
-	</P></DD></DL>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><I><B><FONT FACE="Arial, sans-serif">The
+</FONT><FONT FACE="Courier New, monospace">superGetOpt</FONT><FONT FACE="Arial, sans-serif">()
+function usage:</FONT></B></I></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Courier New, monospace">int
+superGetOpt( argc, argv, &amp;argErr,</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in">                
+<FONT FACE="Courier New, monospace">&quot;fixedKeyword %X %Y %Z&quot;,
+&amp;argX, &amp;argY, &amp;argZ, “Help info”</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in">                
+<FONT FACE="Courier New, monospace">&quot;varKeyword  * %X&quot;,
+argArrayX, &amp;numInArrayX, “Help var”,</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in">                
+<FONT FACE="Courier New, monospace">&quot;argLessKeyword&quot;,
+&amp;wasThisFlagOnCmdLine, “Help no args”,</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in">                 <FONT FACE="Courier New, monospace">...
+<FONT COLOR="#339966">// arbitrarily long list of
+format/argPtr/HelpString triplets</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in">                 <FONT FACE="Courier New, monospace">NULL);
+<FONT COLOR="#339966">// NULL is used to terminate the arg list</FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif">where
+%X, %Y and %Z are any of the above allowable format options.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif"><I><B>Fixed
+number of arguments to a flag:</B></I></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif">If
+'*' is not specified, the number arguments to a given flag is the
+number of %’s in the format (fixed). There must be a matching
+number of argument pointers passed to </FONT><FONT FACE="Courier New, monospace">superGetOpt</FONT><FONT FACE="Arial, sans-serif">()
+directly after the format.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif"><I><B>Variable
+number of arguments to a given flag:</B></I></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif">If
+'*' is specified prior to the ‘%’, then only one '%' may appear
+in the format. In this case, </FONT><FONT FACE="Courier New, monospace">argArray</FONT><FONT FACE="Arial, sans-serif">
+is a pointer to an array large enough to hold </FONT><FONT FACE="Courier New, monospace">numInArray</FONT><FONT FACE="Arial, sans-serif">
+values, which must be set prior to the </FONT><FONT FACE="Courier New, monospace">superGetOpt</FONT><FONT FACE="Arial, sans-serif">()
+call. When </FONT><FONT FACE="Courier New, monospace">superGetOpt</FONT><FONT FACE="Arial, sans-serif">
+returns, </FONT><FONT FACE="Courier New, monospace">numInArray</FONT><FONT FACE="Arial, sans-serif">
+will be set to the number of user supplied arguments, and </FONT><FONT FACE="Courier New, monospace">argArray</FONT><FONT FACE="Arial, sans-serif">
+will be filled with those user-supplied values.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif"><I><B>Flags
+without any arguments:</B></I></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif">If
+the ‘%’ format is not specified, then no arguments are expected
+to your flag (e.g. &quot;--help&quot;), and </FONT><FONT FACE="Courier New, monospace">wasThisFlagOnCmdLine</FONT><FONT FACE="Arial, sans-serif">
+will be </FONT><FONT FACE="Courier New, monospace">False</FONT><FONT FACE="Arial, sans-serif">
+unless the user supplied the flag on the command line.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif"><I><B>Return
+values:</B></I></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif">These
+are defined in </FONT><FONT FACE="Courier New, monospace">supergetopt.h</FONT><FONT FACE="Arial, sans-serif">
+as follows:</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier New, monospace">#define
+SG_ERR_TOO_MANY_OPTIONS -2</FONT></P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier New, monospace">#define
+SG_ERROR_BAD_FORMAT -3</FONT></P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier New, monospace">#define
+SG_ERROR_BAD_FORMAT_TYPE -4</FONT></P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier New, monospace">#define
+SG_ERROR_BAD_ARGTYPE -5</FONT></P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier New, monospace">#define
+SG_ERROR_BAD_VARARGTYPE -6</FONT></P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier New, monospace">#define
+SG_ERROR_INCORRECT_ARG -7</FONT></P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier New, monospace">#define
+SG_ERROR_MISSING_ARG -8</FONT></P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier New, monospace">#define
+SG_ERROR_NO_FORMATS -9</FONT></P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier New, monospace">#define
+SG_ERROR_MIXED_TYPES_IN_VAR -10</FONT></P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier New, monospace">#define
+SG_ERROR_ZERO_LEN_OPTION -11</FONT></P>
+<P CLASS="western" STYLE="margin-left: 0.49in; margin-bottom: 0in"><FONT FACE="Courier New, monospace">#define
+SG_ERROR_TOO_MANY_ARGS -12</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif">In
+the case of an error, *</FONT><FONT FACE="Courier New, monospace">argErr</FONT><FONT FACE="Arial, sans-serif">
+will be the argument number where the problem occurred. If there is
+not any error then </FONT><FONT FACE="Courier New, monospace">argErr</FONT><FONT FACE="Arial, sans-serif">
+will be 0.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><I><B><FONT FACE="Arial, sans-serif">The
+</FONT><FONT FACE="Courier New, monospace">superParse</FONT><FONT FACE="Arial, sans-serif">()
+function:</FONT></B></I></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif">This
+function is exactly the same as </FONT><FONT FACE="Courier New, monospace">superGetOpt</FONT><FONT FACE="Arial, sans-serif">()
+except that </FONT><FONT FACE="Courier New, monospace">argv[0]</FONT><FONT FACE="Arial, sans-serif">
+is not ignored. This makes it useful for parsing config files where
+each line can be turned into </FONT><FONT FACE="Courier New, monospace">argv,
+argc</FONT><FONT FACE="Arial, sans-serif"> format, such as with
+</FONT><FONT FACE="Courier New, monospace">xargs</FONT><FONT FACE="Arial, sans-serif">.
+</FONT><FONT FACE="Arial, sans-serif"><I>E.g.</I></FONT><FONT FACE="Arial, sans-serif">
+ </FONT><FONT FACE="Courier New, monospace">cat configFile | xargs
+testSuperParse</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif"><FONT SIZE=5><B>Portability</B></FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif">This
+library conforms to ANSI C specs and should be completely portable.
+It has been tested on Unix systems (Linux, SunOS, Solaris) and
+Windows XP.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif"><FONT SIZE=5><B>History</B></FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif">I've
+been using it for years!</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif">SuperGetOpt-1.0:
+Release February 3, 1999.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif">SuperGetOpt-2.0:
+Release November 7, 2007.</FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif"><FONT SIZE=5><B>Known
+Bugs</B></FONT></FONT></P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><BR>
+</P>
+<P CLASS="western" STYLE="margin-bottom: 0in"><FONT FACE="Arial, sans-serif">None
+known. Please report bugs to the author.</FONT></P>
 </BODY>
 </HTML>
