@@ -13,19 +13,15 @@ A Simple Example:
 
 
     int main( int argc, char *argv[] )
-  
     {
-  
         int n, argErr;
         float yourFloat;
         int yourInt;
         char yourString[MAX_STRING];
 
-
         n = superGetOpt( argc, argv, &argErr, "-YourFlag %f%s%d", &yourFloat, yourString, &yourInt, NULL );
 
         return(n);
-    
     }
 
 
