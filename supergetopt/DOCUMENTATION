@@ -1,0 +1,124 @@
+
+1) Overview
+
+The supergetopt library makes it very easy to handle all kinds
+of command-line arguments in a printf()-style way. All types
+of command-line args are supported and all arguments are checked
+for type validity.
+
+If you have been searching for an easy-to-use, flexible, portable
+command-line and general-use parser, this is it!
+
+Example:
+
+int main( int argc, char *argv[] )
+{
+	int n;
+	float yourFloat;
+	int yourInt;
+	char yourString[40];
+	
+	n = superGetOpt( argc, argv, "-YourFlag %f%s%d", &yourFloat,yourString,yourInt,
+			NULL );
+	return(n);
+}
+
+It's that easy. No header files to create, no argument order to worry about.
+Read the testSuperGetOpt.c example and you'll understand.
+
+2) Function usage:
+
+2.1: The superGetOpt() function:
+
+This function has the following syntax for the three main types of arg:
+fixed, variable, and argless:
+
+     int superGetOpt( int argc, char *argv[], int *argErr,
+                      "fixedFlagA formatA", &arg1, &arg2,...,
+                      "varFlagB  *formatB", argArray, &numInArray,
+                      "argLessFlag", &wasThisFlagSuppliedOnCmdLine,
+                      ... /* arbitrarily long list of format/argPtr pairs */
+                      NULL); /* NULL is used to terminate the argument list */
+
+where "flag" is an arbitrary keyword like "--help" or "+debug" or "display",
+the "format" is a concatenation of printf()-like % formats, and
+the '*' implies an arbitrarily long list of values
+of the specified format are expected (see below). 
+
+Allowable formats are: 
+        %d integer
+        %hd short int
+        %c character
+        %f float
+        %lf double
+        %s char * string
+
+2.1.1: Fixed number of arguments to a flag
+
+If '*' is not specified, the number arguments to a given flag
+is the number of "%X"s in the format (fixed). There must be
+a matching number of argument pointers passed to superGetOpt
+directly after the format.
+
+
+2.1.2: Arbitrary number of arguments to a given flag
+
+If '*' is specified, then only one '%' may appear in the format.
+In this case, argArray is a pointer to an array large enough to hold
+numInArray, which must be set prior to the superGetOpt() call.
+When superGetOpt returns, numInArray will be set to the number of user supplied
+arguments, and argArray will be filled with those user-supplied values.
+
+where "type" is one of char, int, long, short, float, double, char, char *.
+Again, in the special case of strings, note that this means char *x[].
+
+2.1.3: Flags without arguments
+
+If the format is not specified, no arguments are expected to your
+flag (e.g. "--help"), and wasThisFlagSuppliedOnCmdLine will be False
+unless the user supplied the flag on the commandline.
+
+2.1.5) Return values
+
+These are defined in supergetopt.h as follows:
+
+#define SG_ERR_TOO_MANY_OPTIONS -2
+#define SG_ERROR_BAD_FORMAT -3
+#define SG_ERROR_BAD_FORMAT_TYPE -4
+#define SG_ERROR_BAD_ARGTYPE -5
+#define SG_ERROR_BAD_VARARGTYPE -6
+#define SG_ERROR_INCORRECT_ARG -7
+#define SG_ERROR_MISSING_ARG -8
+#define SG_ERROR_NO_FORMATS -9
+#define SG_ERROR_MIXED_TYPES_IN_VAR -10
+#define SG_ERROR_ZERO_LEN_OPTION -11
+#define SG_ERROR_TOO_MANY_ARGS -12
+
+In the case of an error, *argErr will be the argument number where the problem occurred.
+If there is not error argErr will be 0.
+
+2.2: The superParse() function
+
+This function is exactly the same as superGetOpt()
+except that argv[0] is not ignored. This makes it useful for
+parsing config files where each line can be turned into argv,argc
+format, such as with xargs. E.g.  cat configFile | xargs testSuperParse
+
+3) Portability:
+
+This library conforms to ANSI C specs and should be completely portable.
+It has been tested on Unix systems (Linux 2.0.x, SunOS, Solaris) and
+Windows XP.
+
+4) History:
+
+I've been using it for years! :}
+
+SuperGetOpt-1.0: Release February 3, 1999.
+SuperGetOpt-2.0: Release November 7, 2007.
+
+
+
+6) BUGS:
+
+None known. Please report bugs to the author.

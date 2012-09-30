@@ -1,0 +1,236 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.0  (Linux)">
+	<META NAME="AUTHOR" CONTENT="Anthony Russo">
+	<META NAME="CREATED" CONTENT="20071108;11022700">
+	<META NAME="CHANGEDBY" CONTENT="Anthony Russo">
+	<META NAME="CHANGED" CONTENT="20071108;11533700">
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<DL>
+	<DT><BR>
+	</DT><DT>
+	<FONT FACE="Arial"><FONT SIZE=5><B>SuperGetOpt Overview</B></FONT></FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial">The supergetopt library makes it very easy to
+	handle all kinds of command-line arguments in a printf()-style way.
+	All types of command-line arguments are supported and all
+	user-supplied values are checked for type validity.</FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial">If you have been searching for an easy-to-use,
+	flexible, portable command-line and general use parser, this is it!</FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial"><I><B>A Simple Example:</B></I></FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Courier New"><FONT SIZE=2>int main( int argc, char
+	*argv[] )</FONT></FONT></DT><DT>
+	<FONT FACE="Courier New"><FONT SIZE=2>{</FONT></FONT></DT><DT>
+	    <FONT FACE="Courier New"><FONT SIZE=2>int n, argErr;</FONT></FONT></DT><DT>
+	    <FONT FACE="Courier New"><FONT SIZE=2>float yourFloat;</FONT></FONT></DT><DT>
+	    <FONT FACE="Courier New"><FONT SIZE=2>int yourInt;</FONT></FONT></DT><DT>
+	    <FONT FACE="Courier New"><FONT SIZE=2>char
+	yourString[MAX_STRING];</FONT></FONT></DT><DD>
+	<BR>
+	</DD><DT>
+	    <FONT FACE="Courier New"><FONT SIZE=2>n = superGetOpt( argc,
+	argv, &amp;argErr, </FONT></FONT>
+	</DT><DT>
+	                     <FONT FACE="Courier New"><FONT SIZE=2>&quot;-YourFlag
+	%f%s%d&quot;, &amp;yourFloat, yourString, &amp;yourInt,</FONT></FONT></DT><DT>
+	                     <FONT FACE="Courier New"><FONT SIZE=2>NULL );</FONT></FONT></DT><DD>
+	<BR>
+	</DD><DT>
+	    <FONT FACE="Courier New"><FONT SIZE=2>return(n);</FONT></FONT></DT><DT>
+	<FONT FACE="Courier New"><FONT SIZE=2>}</FONT></FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial">It's that easy. No header files to create, no
+	argument order to concern yourself with.</FONT></DT><DT>
+	<FONT FACE="Arial">Please read the testSuperGetOpt.c example and
+	you'll fully understand.</FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial"><FONT SIZE=5><B>Function usage:</B></FONT></FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial"><I><B>The superGetOpt() function definition:</B></I></FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial">This function has the following syntax for the
+	three main types of command line argument handling: fixed, variable,
+	and argless:</FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Courier New">int superGetOpt( int argc, char *argv[],
+	int *argErr,</FONT></DT><DT>
+	                 <FONT FACE="Courier New">char *fixedFormat, *arg1,
+	*arg2,...,</FONT></DT><DT>
+	                 <FONT FACE="Courier New">char *varFormat,
+	argArray[], int *numInArray,</FONT></DT><DT>
+	                 <FONT FACE="Courier New">char *argLessFormat, int
+	*wasThisFlagOnCmdLine,</FONT></DT><DT>
+	                 <FONT FACE="Courier New">... // arbitrarily long
+	list of format/argPtr pairs</FONT></DT><DT>
+	                 <FONT FACE="Courier New">NULL); // NULL is used to
+	terminate the arg list</FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial">where &quot;<FONT FACE="Courier New">fixedFormat</FONT>&quot;
+	is an arbitrary keyword like &quot;--help&quot; or &quot;+debug&quot;
+	or &quot;display&quot; plus</FONT></DT><DT>
+	<FONT FACE="Arial">a set of printf()-like % formats. “<FONT FACE="Courier New">varFormat</FONT>”
+	is denoted by using a '*' before a single %, implying that an
+	arbitrarily long list of values of the specified format are expected
+	(see below). </FONT>
+	</DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial">Allowable formats are: </FONT>
+	</DT><DT>
+	<BR><BR>
+	</DT></DL>
+<UL>
+	<LI>
+	<FONT FACE="Arial">%d integer</FONT><LI>
+	<FONT FACE="Arial">%hd short int</FONT><LI>
+	<FONT FACE="Arial">%c character</FONT><LI>
+	<FONT FACE="Arial">%f float</FONT><LI>
+	<FONT FACE="Arial">%lf double</FONT><LI><P>
+	<FONT FACE="Arial">%s char * (string)</FONT></P>
+</UL>
+<DL>
+	<DD><BR>
+	</DD><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial"><I><B>The <FONT FACE="Courier New">superGetOpt</FONT>()
+	function usage:</B></I></FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Courier New">int superGetOpt( argc, argv, &amp;argErr,</FONT></DT><DT>
+	                 <FONT FACE="Courier New">&quot;fixedKeyword %X %Y
+	%Z&quot;, &amp;argX, &amp;argY, &amp;argZ,</FONT></DT><DT>
+	                 <FONT FACE="Courier New">&quot;varKeyword * %X&quot;,
+	argArrayX, &amp;numInArrayX,</FONT></DT><DT>
+	                 <FONT FACE="Courier New">&quot;argLessKeyword&quot;,
+	&amp;wasThisFlagOnCmdLine,</FONT></DT><DT>
+	                 <FONT FACE="Courier New">... // arbitrarily long
+	list of format/argPtr pairs</FONT></DT><DT>
+	                 <FONT FACE="Courier New">NULL); // NULL is used to
+	terminate the arg list</FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial">where <FONT FACE="Courier New">%X, %Y </FONT>and
+	<FONT FACE="Courier New">%Z</FONT> are any of the above allowable
+	format options.</FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial"><I><B>Fixed number of arguments to a flag:</B></I></FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial">If '*' is not specified, the number arguments to
+	a given flag is the number of %’s in the format (fixed). There
+	must be a matching number of argument pointers passed to
+	<FONT FACE="Courier New">superGetOpt</FONT>() directly after the
+	format.</FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial"><I><B>Variable number of arguments to a given
+	flag:</B></I></FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial">If '*' is specified prior to the ‘%’, then
+	only one '%' may appear in the format. In this case, <FONT FACE="Courier New">argArray</FONT>
+	is a pointer to an array large enough to hold <FONT FACE="Courier New">numInArray</FONT>
+	values, which must be set prior to the <FONT FACE="Courier New">superGetOpt</FONT>()
+	call. When <FONT FACE="Courier New">superGetOpt</FONT> returns,
+	<FONT FACE="Courier New">numInArray</FONT> will be set to the number
+	of user supplied arguments, and <FONT FACE="Courier New">argArray</FONT>
+	will be filled with those user-supplied values.</FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial"><I><B>Flags without any arguments:</B></I></FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial">If the ‘%’ format is not specified, then no
+	arguments are expected to your flag (e.g. &quot;--help&quot;), and
+	<FONT FACE="Courier New">wasThisFlagOnCmdLine</FONT> will be <FONT FACE="Courier New">False</FONT>
+	unless the user supplied the flag on the command line.</FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial"><I><B>Return values:</B></I></FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial">These are defined in <FONT FACE="Courier New">supergetopt.h</FONT>
+	as follows:</FONT></DT><DT>
+	<BR>
+	</DT><DD>
+	<FONT FACE="Courier New">#define SG_ERR_TOO_MANY_OPTIONS -2</FONT></DD><DD>
+	<FONT FACE="Courier New">#define SG_ERROR_BAD_FORMAT -3</FONT></DD><DD>
+	<FONT FACE="Courier New">#define SG_ERROR_BAD_FORMAT_TYPE -4</FONT></DD><DD>
+	<FONT FACE="Courier New">#define SG_ERROR_BAD_ARGTYPE -5</FONT></DD><DD>
+	<FONT FACE="Courier New">#define SG_ERROR_BAD_VARARGTYPE -6</FONT></DD><DD>
+	<FONT FACE="Courier New">#define SG_ERROR_INCORRECT_ARG -7</FONT></DD><DD>
+	<FONT FACE="Courier New">#define SG_ERROR_MISSING_ARG -8</FONT></DD><DD>
+	<FONT FACE="Courier New">#define SG_ERROR_NO_FORMATS -9</FONT></DD><DD>
+	<FONT FACE="Courier New">#define SG_ERROR_MIXED_TYPES_IN_VAR -10</FONT></DD><DD>
+	<FONT FACE="Courier New">#define SG_ERROR_ZERO_LEN_OPTION -11</FONT></DD><DD>
+	<FONT FACE="Courier New">#define SG_ERROR_TOO_MANY_ARGS -12</FONT></DD><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial">In the case of an error, *<FONT FACE="Courier New">argErr</FONT>
+	will be the argument number where the problem occurred. If there is
+	not any error then <FONT FACE="Courier New">argErr</FONT> will be 0.</FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial"><I><B>The <FONT FACE="Courier New">superParse</FONT>()
+	function:</B></I></FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial">This function is exactly the same as
+	<FONT FACE="Courier New">superGetOpt</FONT>() except that <FONT FACE="Courier New">argv[0]</FONT>
+	is not ignored. This makes it useful for parsing config files where
+	each line can be turned into <FONT FACE="Courier New">argv, argc</FONT>
+	format, such as with <FONT FACE="Courier New">xargs</FONT>. </FONT>
+	</DT><DT>
+	<FONT FACE="Arial"><I>E.g.</I> <FONT FACE="Courier New">cat
+	configFile | xargs testSuperParse</FONT></FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial"><FONT SIZE=5><B>Portability</B></FONT></FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial">This library conforms to ANSI C specs and should
+	be completely portable. It has been tested on Unix systems (Linux,
+	SunOS, Solaris) and Windows XP.</FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial"><FONT SIZE=5><B>History</B></FONT></FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial">I've been using it for years!</FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial">SuperGetOpt-1.0: Release February 3, 1999.</FONT></DT><DT>
+	<FONT FACE="Arial">SuperGetOpt-2.0: Release November 7, 2007.</FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial"><FONT SIZE=5><B>Known Bugs</B></FONT></FONT></DT><DT>
+	<BR>
+	</DT><DT>
+	<FONT FACE="Arial">None known. Please report bugs to the author.</FONT></DT><DD><P>
+	<BR><BR>
+	</P></DD></DL>
+</BODY>
+</HTML>
