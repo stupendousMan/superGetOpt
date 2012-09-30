@@ -50,13 +50,13 @@ int main( int argc, char *argv[] )
 	int n, i;
 	int argErr;
 	
-	char c; double lf; char *s; int d, d1, d2; short h; float f;
+	char c; double lf; char *s = NULL; int d, d1, d2; short h; float f;
 	float farray[20];
 	int numf = 20; // must be set to max initially -- will be overwritten with actual number
 	char *sarray[10];
 	int nums = 10;
 	int helpSet = 0;
-	char *ss;
+	char *ss = NULL;
 	
 /* example call to supergetopt. If called with NULL argv, will print usage info */
 	
