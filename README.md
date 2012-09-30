@@ -9,6 +9,7 @@ All types of command-line arguments are supported and all user-supplied values a
 If you have been searching for an easy-to-use, flexible, portable command-line and general use parser, this is it!
 
 A Simple Example:
+=================
 
 
     int main( int argc, char *argv[] )
@@ -32,6 +33,7 @@ It's that easy. No header files to create, no argument order to concern yourself
 Please read the testSuperGetOpt.c example and you'll fully understand.
 
 Function usage:
+===============
 
 The superGetOpt() function definition:
 
@@ -51,7 +53,7 @@ where "fixedFormat" is an arbitrary keyword like "--help" or "+debug" or "displa
 a set of printf()-like % formats. “varFormat” is denoted by using a '*'  before a single %, implying that an arbitrarily long list of values of the specified format are expected (see below). 
 
 Allowable formats are: 
-
+======================
 
     %d   integer
     %hd short int
@@ -89,6 +91,7 @@ and wasThisFlagOnCmdLine will be False unless the user supplied the flag on the 
 
 
 Return values:
+==============
 
 These are defined in supergetopt.h as follows:
 
@@ -109,16 +112,18 @@ any error then argErr will be 0.
 
 
 The superParse() function:
-
+==========================
 
 This function is exactly the same as superGetOpt() except that argv[0] is not ignored. This makes it useful for parsing config files where each line can be turned into argv, argc format, such as with xargs. E.g.  cat configFile | xargs testSuperParse
 
 
 Portability
+===========
 
 This library conforms to ANSI C specs and should be completely portable. It has been tested on Unix systems (Linux, SunOS, Solaris) and Windows XP.
 
 History
+=======
 
 I've been using it for years!
 
@@ -127,5 +132,6 @@ SuperGetOpt-2.0: Release November 7, 2007.
 
 
 Known Bugs
+==========
 
 None known. Please report bugs to the author.
