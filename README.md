@@ -64,26 +64,26 @@ Allowable formats are:
 The superGetOpt() function usage:
 
 
-int superGetOpt( argc, argv, &argErr,
-                 "fixedKeyword %X %Y %Z", &argX, &argY, &argZ, "Help message fixed",
-                 "varKeyword  * %X", argArrayX, &numInArrayX, " Help message var",
-                 "argLessKeyword", &wasThisFlagOnCmdLine, "Help message flag with no arguments",
-                 ... // arbitrarily long list of format/argPtr/HelpString triplets
-                 NULL); // NULL is used to terminate the arg list
- 
+    int superGetOpt( argc, argv, &argErr,
+                     "fixedKeyword %X %Y %Z", &argX, &argY, &argZ, "Help message fixed",
+                     "varKeyword  * %X", argArrayX, &numInArrayX, " Help message var",
+                     "argLessKeyword", &wasThisFlagOnCmdLine, "Help message flag with no arguments",
+                     // arbitrarily long list of format/argPtr/HelpString triplets
+                     NULL); // NULL is used to terminate the arg list
+
+
 where %X, %Y and %Z are any of the above allowable format options.
- 
+
 Fixed number of arguments to a flag:
- 
+
 If '*' is not specified, the number arguments to a given flag is the number of %’s in the format (fixed). There must be a matching number of argument pointers passed to superGetOpt() directly after the format.
- 
- 
+
 Variable number of arguments to a given flag:
- 
+
 If '*' is specified prior to the ‘%’, then only one '%' may appear in the format. In this case, argArray is a pointer to an array large enough to hold numInArray values, which must be set prior to the superGetOpt() call. When superGetOpt returns, numInArray will be set to the number of user supplied arguments, and argArray will be filled with those user-supplied values.
- 
+
 Flags without any arguments:
- 
+
 If the ‘%’ format is not specified, then no arguments are expected to your flag (e.g. "--help"), 
 and wasThisFlagOnCmdLine will be False unless the user supplied the flag on the command line.
 
