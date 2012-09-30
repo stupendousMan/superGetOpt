@@ -278,7 +278,7 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 #endif
 			lastArg = (int *) va_arg(ap, int *);
 			*lastArg = optnum;
-			return( SG_ERR_TOO_MANY_OPTIONS );
+			return( SG_ERROR_TOO_MANY_OPTIONS );
 		}
 	}
 

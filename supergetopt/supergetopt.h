@@ -49,7 +49,7 @@ int superParseOpt( int argc, char **argv, int *lastArg, ... );
 
 
 #define SG_ERROR_PRINT_USAGE -1
-#define SG_ERR_TOO_MANY_OPTIONS -2
+#define SG_ERROR_TOO_MANY_OPTIONS -2
 #define SG_ERROR_BAD_FORMAT -3
 #define SG_ERROR_BAD_FORMAT_TYPE -4
 #define SG_ERROR_BAD_ARGTYPE -5
