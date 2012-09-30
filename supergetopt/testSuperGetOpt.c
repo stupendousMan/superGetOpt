@@ -70,6 +70,7 @@ int main( int argc, char *argv[] )
 			"-help", &helpSet, "to get this help message",
 			(char * ) 0 ); 
 
+    printf("HelpSet = %d n = %d argErr=%d\n", helpSet, n, argErr);
 	if( helpSet || n ) 
 	{
 		usage();
@@ -97,5 +98,5 @@ static void usage()
 {
 	int argErr;
 	
-	superGetOpt(0,NULL, &argErr, NULL);
+	superGetOpt(0,NULL, &argErr, NULL); // prints help info
 }

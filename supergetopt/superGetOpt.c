@@ -122,6 +122,9 @@ int superGetOpt( int argc, char **argv, int *lastArg, ... )
 	
 	va_end( ap );
 	
+	//printf("n=%d lastErr=%d arc=%d\n", n,*lastArg,argc);
+	if( argc == 1 && *lastArg == 1 ) n = SG_ERROR_PRINT_USAGE;
+	
 	return(n);
 }
 
@@ -157,6 +160,8 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 	int lastArgProcessed = argc;
 	int lastArgProcessedSuccessfully = 1;
 	int lastFlag = 0;
+	
+	*lastArg = 0;
 	
 	// To do: return correct value (error or last arg processed) in all cases
 	//printf("Orig optnum = %d usageCall=%d\n", optnum,usageCall);
@@ -279,10 +284,10 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 
 
 	// user can tell us to print usage by calling with NULL or argc = 0 or both
-    if( argv == NULL || argc == 0)
+    if( argv == NULL || argc == 0 /*|| usageCall == 1*/ )
 	{
 		argc = 0; // prevent any parsing and just print out 
-		fprintf(stderr, "***** Usage *****\n");
+		if( optnum > 0 ) fprintf(stderr, "***** Usage *****\n");
 		// print out usage!!!
 		//printf("Help optNum = %d\n", optnum);
 		for( i = 0 ; i < optnum ; i++ )
@@ -306,7 +311,7 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 				printf(" <%s>", optionlist[i].helpString);
 			}
 #endif
-			printf("\n");
+			if( optnum > 0 ) printf("\n");
 		}
 		
 		return(0);
@@ -542,7 +547,8 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 
 static int parse_string(char *s, struct optionlist_s *option, int *noName)
 {
-	int len, z;
+    size_t len;
+	int z;
 	int offset = 0;
 	char *pN, *pM;
 
@@ -556,7 +562,7 @@ static int parse_string(char *s, struct optionlist_s *option, int *noName)
 	if( len < 2 )
 	{
 #if DEBUG
-		fprintf(stderr, "Parse_string: option has zero length <%s> len=%d\n", s, len);
+		fprintf(stderr, "Parse_string: option has zero length <%s> len=%d\n", s, (int) len);
 #endif
 		return(SG_ERROR_ZERO_LEN_OPTION);
 	}

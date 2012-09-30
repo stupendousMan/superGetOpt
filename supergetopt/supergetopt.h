@@ -48,6 +48,7 @@ int superParseOpt( int argc, char **argv, int *lastArg, ... );
 #define SG_ENABLE_HELPSTRING 1 // if enabled, each flag requires a helpString parameter from the caller
 
 
+#define SG_ERROR_PRINT_USAGE -1
 #define SG_ERR_TOO_MANY_OPTIONS -2
 #define SG_ERROR_BAD_FORMAT -3
 #define SG_ERROR_BAD_FORMAT_TYPE -4
