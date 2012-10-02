@@ -94,7 +94,7 @@ struct optionlist_s
 };
 
 
-static int superParseInternal( int argc, char **argv, int usageCall,  int *lastArg, va_list ap );
+static int superParseInternal( int argc, char **argv, int usageCall,  int *lastArg, int *pUnAccountedFor, va_list ap );
 static ANYTYPE getval(char *s, int type, int *flag);
 static char myread_char(char *s, int *flag);
 static short myread_short(char *s, int *flag);
@@ -110,6 +110,7 @@ int superGetOpt( int argc, char **argv, int *lastArg, ... )
 	va_list ap;
 	int n;
 	int usageCall = 0;
+	int unAccountedFor;
 	
 	if( argv != NULL )	argv++;
 	else usageCall = 1;
@@ -119,15 +120,15 @@ int superGetOpt( int argc, char **argv, int *lastArg, ... )
 
 	va_start( ap, lastArg );
 
-	n = superParseInternal( argc, argv, usageCall, lastArg, ap );
+	n = superParseInternal( argc, argv, usageCall, lastArg, &unAccountedFor, ap );
 	
 	va_end( ap );
 	
-	//printf("n=%d lastErr=%d arc=%d\n", n,*lastArg,argc);
+	printf("n=%d lastErr=%d arc=%d unAcc=%d\n", n,*lastArg,argc,unAccountedFor);
 	if( usageCall == 1 && *lastArg == 1 ) n = SG_ERROR_PRINT_USAGE;
-	else if( usageCall == 0 && *lastArg == 1 && n == SG_ERROR_TOO_MANY_ARGS )
+	else if( unAccountedFor )
 	{
-		n = SG_ERROR_EXTRA_ARGS; // not necessarily an error, just unaccounted for args
+		n = unAccountedFor; // not necessarily an error, just unaccounted for args
 	}
 	
 	return(n);
@@ -138,19 +139,26 @@ int superParseOpt( int argc, char **argv, int *lastArg, ... )
 	va_list ap;
 	int n;
 	int usageCall = 0;
+	int unAccountedFor;
 	
 	if( argc == 0 || argv == NULL ) usageCall = 1;
 	
 	va_start( ap, lastArg );
 
-	n = superParseInternal( argc, argv, usageCall,lastArg, ap );
+	n = superParseInternal( argc, argv, usageCall,lastArg, &unAccountedFor, ap );
 	
 	va_end( ap );
 	
+	if( usageCall == 1 && *lastArg == 1 ) n = SG_ERROR_PRINT_USAGE;
+	else if( unAccountedFor )
+	{
+		n = unAccountedFor; // not necessarily an error, just unaccounted for args
+	}
+		
 	return(n);
 }
 
-static int superParseInternal( int argc, char **argv, int usageCall, int *lastArg, va_list ap )
+static int superParseInternal( int argc, char **argv, int usageCall, int *lastArg, int *pUnAccountedFor, va_list ap )
 {
 	char *optstring[MAXOPTS+1];
 	static int optnum;
@@ -165,6 +173,8 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 	int lastArgProcessed = argc;
 	int lastArgProcessedSuccessfully = 1;
 	int lastFlag = 0;
+	
+	*pUnAccountedFor = 0; // args not associated with detected flags
 	
 	*lastArg = 0;
 	
@@ -530,20 +540,21 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 
 	if( found == 0 )
 	{
-		//fprintf(stderr,"option not found at argv=%s left=%d\n",argv[0],argsleft);
 #if DEBUG
+		fprintf(stderr,"option not found at argv=%s left=%d lastProc=%d latProcSuc=%d\n",argv[0],argsleft,lastArgProcessed,lastArgProcessedSuccessfully);
 		//fprintf(stderr,"User did not supply option name <%s>\n",optionlist[lastFlag].name);
 #endif
 		//*lastArg = lastArgProcessed+1;
 		*lastArg = lastArgProcessedSuccessfully;
-		return( SG_ERROR_TOO_MANY_ARGS );
+		//return( SG_ERROR_TOO_MANY_ARGS );
+		(*pUnAccountedFor)++;
 		if( argsleft > 0 ) argv++;
 		argsleft--;
 	}
 	
 	}
 
-	*lastArg = lastArgProcessedSuccessfully;
+	//*lastArg = lastArgProcessedSuccessfully;
 	//return_val = lastArgProcessed;
 	
 	return( return_val );

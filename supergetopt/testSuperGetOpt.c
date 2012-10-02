@@ -81,12 +81,17 @@ int main( int argc, char *argv[] )
 	
 	
 	// Note: n = SG_ERROR_EXTRA_ARGS just means extra args, starting at argv[argPos]
-	if( helpSet || (n && n != SG_ERROR_EXTRA_ARGS) ) 
+	if( helpSet || (n < 0) ) 
 	{
 		usage();
 		return(1);
 	}
-	
+	else if( n > 0)
+	{
+		printf("Have %d extra Args: ", n);
+		for( i = argPos ; i < argPos+n ; i++ ) printf("<%s> ", argv[i]);
+		printf("\n");
+	}
 	printf("-puffy has c=%c double=%lf s=%s int=%d eminem has short=%hd fl=%f\n", c,lf,s,d,h,f);
 	printf("nums = %d numf=%d\n", nums,numf);
 	
