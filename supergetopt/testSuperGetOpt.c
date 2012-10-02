@@ -48,19 +48,26 @@ static void usage();
 int main( int argc, char *argv[] )
 {
 	int n, i;
-	int argErr;
+	int argPos;
 	
-	char c; double lf; char *s = NULL; int d, d1, d2; short h; float f;
+	// default values
+	char c = 'A'; 
+	double lf = 3.333; 
+	char *s = NULL; 
+	int d=0, d1=1, d2=2; 
+	short h = 12; 
+	float f = 15.0;
+	char *ss = NULL;
+	
 	float farray[20];
 	int numf = 20; // must be set to max initially -- will be overwritten with actual number
-	char *sarray[10];
+	char *sarray[10] = {0};
 	int nums = 10;
 	int helpSet = 0;
-	char *ss = NULL;
 	
 /* example call to supergetopt. If called with NULL argv, will print usage info */
 	
-	n = superGetOpt(argc,argv, &argErr,
+	n = superGetOpt(argc,argv, &argPos,
 			"-puffy %c %lf %s %d",&c, &lf, &s, &d, "help message 1",
 			"-eminem %hd %f", &h, &f, "help message 2",
 			"-e %d %d", &d1, &d2, "help message 3",
@@ -70,8 +77,11 @@ int main( int argc, char *argv[] )
 			"-help", &helpSet, "to get this help message",
 			(char * ) 0 ); 
 
-    printf("HelpSet = %d n = %d argErr=%d\n", helpSet, n, argErr);
-	if( helpSet || n ) 
+	printf("Supergetopt returned %d argPos=%d helpSet=%d\n", n,argPos,helpSet);
+	
+	
+	// Note: n = SG_ERROR_EXTRA_ARGS just means extra args, starting at argv[argPos]
+	if( helpSet || (n && n != SG_ERROR_EXTRA_ARGS) ) 
 	{
 		usage();
 		return(1);
@@ -88,8 +98,6 @@ int main( int argc, char *argv[] )
 		printf("<%f> ", farray[i]);
 	printf("\n");
 
-	printf("Supergetopt returned %d argErr=%d helpSet=%d\n", n,argErr,helpSet);
-	
 	
 	return(0);
 }

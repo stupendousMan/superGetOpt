@@ -113,8 +113,9 @@ int superGetOpt( int argc, char **argv, int *lastArg, ... )
 	
 	if( argv != NULL )	argv++;
 	else usageCall = 1;
-    if( argc > 1 ) argc--;
-	else usageCall = 1;
+	
+    if( argc <= 1 ) usageCall = 1;
+	else	argc--;
 
 	va_start( ap, lastArg );
 
@@ -123,7 +124,11 @@ int superGetOpt( int argc, char **argv, int *lastArg, ... )
 	va_end( ap );
 	
 	//printf("n=%d lastErr=%d arc=%d\n", n,*lastArg,argc);
-	if( argc == 1 && *lastArg == 1 ) n = SG_ERROR_PRINT_USAGE;
+	if( usageCall == 1 && *lastArg == 1 ) n = SG_ERROR_PRINT_USAGE;
+	else if( usageCall == 0 && *lastArg == 1 && n == SG_ERROR_TOO_MANY_ARGS )
+	{
+		n = SG_ERROR_EXTRA_ARGS; // not necessarily an error, just unaccounted for args
+	}
 	
 	return(n);
 }
