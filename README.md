@@ -19,7 +19,7 @@ A Simple Example:
         int yourInt;
         char yourString[MAX_STRING];
 
-        n = superGetOpt( argc, argv, &argErr, "-YourFlag %f%s%d", &yourFloat, yourString, &yourInt, NULL );
+        n = superGetOpt( argc, argv, &argErr, "-YourFlag %f%s%d", &yourFloat, yourString, &yourInt, "Help Message", NULL );
 
         return(n);
     }
@@ -91,7 +91,8 @@ Return values:
 
 These are defined in supergetopt.h as follows:
 
-    #define SG_ERR_TOO_MANY_OPTIONS -2
+    #define SG_ERROR_PRINT_USAGE -1
+    #define SG_ERROR_TOO_MANY_OPTIONS -2
     #define SG_ERROR_BAD_FORMAT -3
     #define SG_ERROR_BAD_FORMAT_TYPE -4
     #define SG_ERROR_BAD_ARGTYPE -5
@@ -125,6 +126,7 @@ I've been using it for years!
 
 SuperGetOpt-1.0: Release February 3, 1999.
 SuperGetOpt-2.0: Release November 7, 2007.
+SuperGetOpt-2.1: Release Oct 1, 2012.
 
 
 Known Bugs
