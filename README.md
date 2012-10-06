@@ -14,12 +14,12 @@ A Simple Example:
 
     int main( int argc, char *argv[] )
     {
-        int n, argErr;
+        int n, argPos;
         float yourFloat;
         int yourInt;
         char yourString[MAX_STRING];
 
-        n = superGetOpt( argc, argv, &argErr, "-YourFlag %f%s%d", &yourFloat, yourString, &yourInt, "Help Message", NULL );
+        n = superGetOpt( argc, argv, &argPos, "-YourFlag %f%s%d", &yourFloat, yourString, &yourInt, "Help Message", NULL );
 
         return(n);
     }
@@ -37,7 +37,7 @@ The superGetOpt() function definition:
 This function has the following syntax for the three main types of command line argument handling: fixed, variable, and argless:
 
 
-    int superGetOpt( int argc, char *argv[], int *argErr,
+    int superGetOpt( int argc, char *argv[], int *argPos,
                      char *fixedFormat, *arg1, *arg2,..., "Help string fixed",
                      char *varFormat, argArray[], int *numInArray, "Help string var",
                      char *argLessFormat, int *wasThisFlagOnCmdLine, "Help string falgs with no args",
@@ -62,7 +62,7 @@ Allowable formats are:
 The superGetOpt() function usage:
 
 
-    int superGetOpt( argc, argv, &argErr,
+    int superGetOpt( argc, argv, &argPos,
                      "fixedKeyword %X %Y %Z", &argX, &argY, &argZ, "Help message fixed",
                      "varKeyword  * %X", argArrayX, &numInArrayX, " Help message var",
                      "argLessKeyword", &wasThisFlagOnCmdLine, "Help message flag with no arguments",
@@ -104,8 +104,8 @@ These are defined in supergetopt.h as follows:
     #define SG_ERROR_ZERO_LEN_OPTION -11
     #define SG_ERROR_TOO_MANY_ARGS -12
     
-In the case of an error, *argErr will be the argument number where the problem occurred. If there is not 
-any error then argErr will be 0.
+In the case of an error, *argPos will be the argument number where the problem occurred. If there is not 
+any error then argPos will be 0. If extra arguments are present that are not related to flag usage, then the return value will be the number of extra arguments, and argPos will be where the first one occurs.
 
 
 The superParse() function:
@@ -132,4 +132,5 @@ SuperGetOpt-2.1: Release Oct 1, 2012.
 Known Bugs
 ==========
 
-None known. Please report bugs to the author.
+If extra arguments are present that both precede the first flag and come after the last flag, there is no way to easily find them. You'll know how many there are, and where the first one is, but that is all.
+None others known. Please report bugs to the author.
