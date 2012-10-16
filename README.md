@@ -17,7 +17,7 @@ A Simple Example:
         int n, argPos;
         float yourFloat;
         int yourInt;
-        char yourString[MAX_STRING];
+        char *yourString;
 
         n = superGetOpt( argc, argv, &argPos, "-YourFlag %f%s%d", &yourFloat, yourString, &yourInt, "Help Message", NULL );
 
@@ -124,9 +124,9 @@ History
 
 I've been using it for years!
 
-SuperGetOpt-1.0: Release February 3, 1999.
-SuperGetOpt-2.0: Release November 7, 2007.
-SuperGetOpt-2.1: Release Oct 1, 2012.
+    SuperGetOpt-1.0: Release February 3, 1999.
+    SuperGetOpt-2.0: Release November 7, 2007.
+    SuperGetOpt-2.1: Release Oct 1, 2012.
 
 
 Known Bugs
