@@ -1,6 +1,6 @@
 
 CC=gcc
-CFLAGS = -Wall -ggdb
+CFLAGS = -Wall -ggdb -O3
 #CC=/opt/gcc-4.0.2-bc/bin/gcc
 #CFLAGS += --bounds-checking
 

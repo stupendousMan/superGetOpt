@@ -44,7 +44,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define DEBUG 1
 
 #define MAXARGS 10		/* no called function can have more than this number of args */
-#define MAXOPTS 50		/* only this many options total to superGetOpt() */
+#define MAXOPTS   100    /* only this many options total to superGetOpt() */
 #define MAXSTRING 120	/* max of any string passed through */
 
 enum 
@@ -52,19 +52,22 @@ enum
 	CHAR,
 	SHORT,
 	INT,
+	UINT,
+	HEX,
 	FLOAT,
 	DOUBLE,
 	STRING,
 	NUMTYPES
 };
 
-const char typeNames[NUMTYPES][10] = { "char", "short", "int", "float", "double", "string" };
+const char typeNames[NUMTYPES][10] = { "char", "short", "int", "uint", "hex", "float", "double", "string" };
 
 typedef union
 {
 	char c;
 	short h;
 	int i;
+	unsigned int ui; // holds hex and unsigned int too
 	float f;
 	double d;
 	char *string;
@@ -75,6 +78,7 @@ typedef union
 	char *c;
 	short *h;
 	int *i;
+	unsigned int *ui; // holds hex and unsigned int too
 	float *f;
 	double *d;
 	char **string;
@@ -99,6 +103,8 @@ static ANYTYPE getval(char *s, int type, int *flag);
 static char myread_char(char *s, int *flag);
 static short myread_short(char *s, int *flag);
 static int myread_int(char *s, int *flag);
+static unsigned int myread_uint(char *s, int *flag);
+static unsigned int myread_hex(char *s, int *flag);
 static float myread_float(char *s, int *flag);
 static double myread_double(char *s, int *flag);
 static int parse_string(char *s, struct optionlist_s *option, int *noName);
@@ -124,9 +130,9 @@ int superGetOpt( int argc, char **argv, int *lastArg, ... )
 	
 	va_end( ap );
 	
-	printf("n=%d lastErr=%d arc=%d unAcc=%d\n", n,*lastArg,argc,unAccountedFor);
-	if( usageCall == 1 && *lastArg == 1 ) n = SG_ERROR_PRINT_USAGE;
-	else if( unAccountedFor )
+	//printf("n=%d lastErr=%d arc=%d unAcc=%d\n", n,*lastArg,argc,unAccountedFor);
+	if( usageCall == 1 && lastArg != NULL && *lastArg == 1 ) n = SG_ERROR_PRINT_USAGE;
+	else if( unAccountedFor && n != SG_ERROR_MISSING_ARG )
 	{
 		n = unAccountedFor; // not necessarily an error, just unaccounted for args
 	}
@@ -176,7 +182,7 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 	
 	*pUnAccountedFor = 0; // args not associated with detected flags
 	
-	*lastArg = 0;
+	if( lastArg ) *lastArg = 0;
 	
 	// To do: return correct value (error or last arg processed) in all cases
 	//printf("Orig optnum = %d usageCall=%d\n", optnum,usageCall);
@@ -212,6 +218,12 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 				case INT: 
 					optionlist[optnum].argptr[i].i = va_arg(ap, int *);
 					break;
+				case UINT:
+					optionlist[optnum].argptr[i].ui = va_arg(ap, unsigned int *);
+					break;
+				case HEX:
+					optionlist[optnum].argptr[i].ui = va_arg(ap, unsigned int *);
+					break;
 				case FLOAT: 
 					optionlist[optnum].argptr[i].f = va_arg(ap, float *);
 					break;
@@ -240,6 +252,14 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 				case INT: 
 					optionlist[optnum].argptr[i].i = va_arg(ap, int *);
 					if( optionlist[optnum].argptr[i].i == NULL ) return( SG_ERROR_MISSING_ARG );
+					break;
+				case UINT:
+					optionlist[optnum].argptr[i].ui = va_arg(ap, unsigned int *);
+					if( optionlist[optnum].argptr[i].ui == NULL ) return( SG_ERROR_MISSING_ARG );
+					break;
+				case HEX:
+					optionlist[optnum].argptr[i].ui = va_arg(ap, unsigned int *);
+					if( optionlist[optnum].argptr[i].ui == NULL ) return( SG_ERROR_MISSING_ARG );
 					break;
 				case FLOAT: 
 					optionlist[optnum].argptr[i].f = va_arg(ap, float *);
@@ -377,6 +397,13 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 						case INT: 
 							*optionlist[i].argptr[j].i = optionlist[i].argval[j].i;
 							break;
+						case UINT:
+							*optionlist[i].argptr[j].ui = optionlist[i].argval[j].ui;
+							break;
+						case HEX:
+							//printf("got hex: %x good=%d\n",optionlist[i].argval[j].ui,good);
+							*optionlist[i].argptr[j].ui = optionlist[i].argval[j].ui;
+							break;
 						case FLOAT: 
 							*optionlist[i].argptr[j].f = optionlist[i].argval[j].f;
 							break;
@@ -419,7 +446,7 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 						else 
 						{
 #if DEBUG
-							fprintf(stderr,"User did not supply enough arguments to option name <%s>\n",optionlist[i].name);
+							fprintf(stderr,"[1] User did not supply enough arguments to option name <%s>\n",optionlist[i].name);
 #endif
 							//*lastArg = lastArgProcessed;
 							*lastArg = lastArgProcessedSuccessfully;
@@ -440,6 +467,12 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 							break;
 						case INT: 
 							optionlist[i].argptr[0].i[j] = myread_int(argv[0],&good); 
+							break;
+						case UINT:
+							optionlist[i].argptr[0].ui[j] = myread_uint(argv[0],&good);
+							break;
+						case HEX:
+							optionlist[i].argptr[0].ui[j] = myread_hex(argv[0],&good);
 							break;
 						case FLOAT:
 							optionlist[i].argptr[0].f[j] = myread_float(argv[0],&good); 
@@ -523,7 +556,7 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 			if( j != optionlist[i].numargs && optionlist[i].varflag != 1 )
 			{
 #if DEBUG
-				fprintf(stderr,"User did not supply enough arguments to option name <%s> Expected %d Got %d\n",optionlist[i].name,optionlist[i].numargs,j);
+				fprintf(stderr,"[2] User did not supply enough arguments to option name <%s> Expected %d Got %d\n",optionlist[i].name,optionlist[i].numargs,j);
 #endif
 				//*lastArg = lastArgProcessed;
 				*lastArg = lastArgProcessedSuccessfully;
@@ -541,9 +574,17 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 	if( found == 0 )
 	{
 #if DEBUG
+		//fprintf(stderr,"option not found at argv=%s left=%d lastProc=%d latProcSuc=%d\n",argv[0],argsleft,lastArgProcessed,lastArgProcessedSuccessfully);
+		//fprintf(stderr,"User did not supply option name <%s>\n",optionlist[lastFlag].name);
+#endif
+		if( argv[0][0] == '-' || argv[0][0] == '+' || argv[0][0] == '=' )
+		{
+#if DEBUG
 		fprintf(stderr,"option not found at argv=%s left=%d lastProc=%d latProcSuc=%d\n",argv[0],argsleft,lastArgProcessed,lastArgProcessedSuccessfully);
 		//fprintf(stderr,"User did not supply option name <%s>\n",optionlist[lastFlag].name);
 #endif
+			return(SG_ERROR_INCORRECT_ARG);
+		}
 		//*lastArg = lastArgProcessed+1;
 		*lastArg = lastArgProcessedSuccessfully;
 		//return( SG_ERROR_TOO_MANY_ARGS );
@@ -611,7 +652,7 @@ static int parse_string(char *s, struct optionlist_s *option, int *noName)
 		else
 			*noName = 0;
 
-		if( pN-s >= len - 1 )
+		if( pN-s >= (int)len - 1 )
 		{
 #if DEBUG
 			fprintf(stderr, "Parse_String: No formats given in <%s>\n",s /* was scopy */);
@@ -676,7 +717,7 @@ static int parse_format(char *s, int *argtypes)
 		return(SG_ERROR_BAD_FORMAT);
 	}
 
-	len = strlen( sp );
+	len = (int) strlen( sp );
 	scopy = malloc( len + 1 );
 	strcpy( scopy, sp );
 	//scopy = (char *) strdup( sp ); // eliminate strdup call
@@ -711,6 +752,12 @@ static int parse_format(char *s, int *argtypes)
 		else
 		if( strstr(string, "%s") != NULL )
 			argtypes[i] = (int) STRING;
+		else
+		if( strstr(string, "%u") != NULL )
+			argtypes[i] = (int) UINT;
+		else
+		if( strstr(string, "%x") != NULL )
+			argtypes[i] = (int) HEX;
 		else
 		{
 #if DEBUG
@@ -769,6 +816,26 @@ static ANYTYPE getval(char *s, int type, int *flag)
 				return( value );
 			}
 			else return( value ); 	
+		case UINT:
+			if( sscanf( s, "%u", &value.ui ) != 1 )
+			{
+#if DEBUG
+				fprintf(stderr," Getval: Bad argument. Expected unsigned integer\n");
+#endif
+				*flag = -1;
+				return( value );
+			}
+			else return( value );
+		case HEX:
+			if( sscanf( s, "%x", &value.ui ) != 1 )
+			{
+#if DEBUG
+				fprintf(stderr," Getval: Bad argument. Expected hex integer\n");
+#endif
+				*flag = -1;
+				return( value );
+			}
+			else return( value );
 		case FLOAT:
 			if( sscanf( s, "%f", &value.f ) != 1 )
 			{
@@ -832,6 +899,26 @@ static int myread_int(char *s, int *flag)
 	}
 	return( x );
 } 	
+static unsigned int myread_uint(char *s, int *flag)
+{
+	int x;
+	*flag = 0;
+	if( sscanf( s, "%u", &x ) != 1 )
+	{
+		*flag = -1;
+	}
+	return( x );
+}
+static unsigned int myread_hex(char *s, int *flag)
+{
+	int x;
+	*flag = 0;
+	if( sscanf( s, "%x", &x ) != 1 )
+	{
+		*flag = -1;
+	}
+	return( x );
+}
 static float myread_float(char *s, int *flag)
 {
 	float x;

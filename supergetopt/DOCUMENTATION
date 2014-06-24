@@ -51,6 +51,7 @@ Allowable formats are:
         %c character
         %f float
         %lf double
+		%x  hex
         %s char * string
 
 2.1.1: Fixed number of arguments to a flag
