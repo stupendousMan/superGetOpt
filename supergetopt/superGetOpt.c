@@ -31,8 +31,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 // suppress MS warnings under windows
+#ifndef _CRT_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS 
+#endif
+#ifndef _CRT_SECURE_NO_DEPRECATE
 #define _CRT_SECURE_NO_DEPRECATE
+#endif
 
 
 #include <stdio.h>
@@ -43,9 +47,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define DEBUG 1
 
-#define MAXARGS 10		/* no called function can have more than this number of args */
+#define MAXARGS    10    /* no called function can have more than this number of args */
 #define MAXOPTS   100    /* only this many options total to superGetOpt() */
-#define MAXSTRING 120	/* max of any string passed through */
+#define MAXSTRING 120    /* max of any string passed through */
 
 enum 
 {
@@ -178,7 +182,7 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 	int return_val;
 	int lastArgProcessed = argc;
 	int lastArgProcessedSuccessfully = 1;
-	int lastFlag = 0;
+	//int lastFlag = 0;
 	
 	*pUnAccountedFor = 0; // args not associated with detected flags
 	
@@ -329,13 +333,13 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 		{
 			int t;
 			printf("\t %s", optionlist[i].name);
-			for( t = 0 ; t < optionlist[i].numargs ; t++ )
+			for( t = 0 ; t < optionlist[i].numargs && t < MAXARGS; t++ )
 			{
 				if( optionlist[i].varflag == 0 )
 				{
 				    printf( " %s", typeNames[optionlist[i].argtype[t]]);
 				}
-				else
+				else if( t == 0 ) /* just once */
 				{
 				    printf( " %s [%s, ...]", typeNames[optionlist[i].argtype[t]], typeNames[optionlist[i].argtype[t]]);
 				}
@@ -360,13 +364,13 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 	while( argsleft > 0 && usageCall == 0 )
 	{
 
-	for( i = 0, lastFlag = 0 ; i < optnum && argsleft > 0 ; i++ )
+	for( i = 0 /*, lastFlag = 0*/ ; i < optnum && argsleft > 0 ; i++ )
 	{
 		//printf("Looking for option %d <%s>: argv=<%s> argsleft=%d\n", i, optionlist[i].name,argv[0],argsleft);
 		found = 0;
 		if( strcmp( argv[0], optionlist[i].name ) == 0 )
 		{
-			lastFlag = i;
+			/* lastFlag = i; */
 			
 			found = 1;
 			argsleft--;	
@@ -580,11 +584,12 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 		if( argv[0][0] == '-' || argv[0][0] == '+' || argv[0][0] == '=' )
 		{
 #if DEBUG
-		fprintf(stderr,"option not found at argv=%s left=%d lastProc=%d latProcSuc=%d\n",argv[0],argsleft,lastArgProcessed,lastArgProcessedSuccessfully);
-		//fprintf(stderr,"User did not supply option name <%s>\n",optionlist[lastFlag].name);
+			fprintf(stderr,"option not found at argv=%s left=%d lastProc=%d latProcSuc=%d\n",argv[0],argsleft,lastArgProcessed,lastArgProcessedSuccessfully);
+			//fprintf(stderr,"User did not supply option name <%s>\n",optionlist[lastFlag].name);
 #endif
 			return(SG_ERROR_INCORRECT_ARG);
 		}
+		
 		//*lastArg = lastArgProcessed+1;
 		*lastArg = lastArgProcessedSuccessfully;
 		//return( SG_ERROR_TOO_MANY_ARGS );
@@ -901,7 +906,7 @@ static int myread_int(char *s, int *flag)
 } 	
 static unsigned int myread_uint(char *s, int *flag)
 {
-	int x;
+	unsigned int x;
 	*flag = 0;
 	if( sscanf( s, "%u", &x ) != 1 )
 	{
@@ -911,7 +916,7 @@ static unsigned int myread_uint(char *s, int *flag)
 }
 static unsigned int myread_hex(char *s, int *flag)
 {
-	int x;
+	unsigned int x;
 	*flag = 0;
 	if( sscanf( s, "%x", &x ) != 1 )
 	{
