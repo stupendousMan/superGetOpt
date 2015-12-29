@@ -170,7 +170,7 @@ int superParseOpt( int argc, char **argv, int *lastArg, ... )
 
 static int superParseInternal( int argc, char **argv, int usageCall, int *lastArg, int *pUnAccountedFor, va_list ap )
 {
-	char *optstring[MAXOPTS+1];
+	char *optstring[MAXOPTS+1] = {0};
 	static int optnum;
 	int argsleft;
 	register int i,j;
@@ -203,10 +203,10 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 	{ 
 		optionlist[optnum].numargs = parse_string(optstring[optnum],&optionlist[optnum], &noName);
 		
-		//printf("Num args to option = %d for <%s>\n",optionlist[optnum].numargs,optstring[optnum]);
+		//fprintf(stderr, "Num args to option = %d for <%s>\n",optionlist[optnum].numargs,optstring[optnum]);
 		for( i = 0 ; i < optionlist[optnum].numargs ; i++ )
 		{
-			//printf("Looping through numargs=%d at iter=%d var=%d\n", optionlist[optnum].numargs, i, optionlist[optnum].varflag);
+			//fprintf(stderr,"Looping through numargs=%d at iter=%d var=%d\n", optionlist[optnum].numargs, i, optionlist[optnum].varflag);
 			if( optionlist[optnum].varflag != 1 )
 			{
 				// this only works for fixed arg formats
@@ -283,7 +283,7 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 				// now pop pointer to numArgs
 				optionlist[optnum].pNumArgs = va_arg(ap, int *);
 				optionlist[optnum].numArgsMax = *optionlist[optnum].pNumArgs;
-				//printf("Varargs pNumArgs=0x%x %d\n", optionlist[optnum].pNumArgs, *optionlist[optnum].pNumArgs);
+				//fprintf(stderr, "Varargs pNumArgs=0x%x %d\n", optionlist[optnum].pNumArgs, *optionlist[optnum].pNumArgs);
 				if( optionlist[optnum].pNumArgs == NULL )
 				{
 					return( SG_ERROR_MISSING_ARG );
@@ -299,9 +299,9 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 		if(optionlist[optnum].numargs == 0 /*&& usageCall == 0*/)
 		{
 			// need to pop off the 
-			//printf("flagless arg <%s>\n", optstring[optnum]);
+			//fprintf(stderr,"flagless arg <%s> optnum=%d optlist_argptr=%d\n", optstring[optnum],optnum,optionlist[optnum].argptr[0].i);
 			optionlist[optnum].argptr[0].i = va_arg(ap, int *);
-			*optionlist[optnum].argptr[0].i = 0; // init
+			///////*optionlist[optnum].argptr[0].i = 0; // init
 		}
 
 #if SG_ENABLE_HELPSTRING
