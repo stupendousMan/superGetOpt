@@ -1,7 +1,7 @@
 
 /*********************************************************************
 
-Copyright (c) 2007-2012, Anthony P. Russo
+Copyright (c) 2007-2016, Anthony P. Russo
 
 All rights reserved.
 
