@@ -332,25 +332,25 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 		for( i = 0 ; i < optnum ; i++ )
 		{
 			int t;
-			printf("\t %s", optionlist[i].name);
+			fprintf(stderr, "\t %s", optionlist[i].name);
 			for( t = 0 ; t < optionlist[i].numargs && t < MAXARGS; t++ )
 			{
 				if( optionlist[i].varflag == 0 )
 				{
-				    printf( " %s", typeNames[optionlist[i].argtype[t]]);
+				    fprintf(stderr, " %s", typeNames[optionlist[i].argtype[t]]);
 				}
 				else if( t == 0 ) /* just once */
 				{
-				    printf( " %s [%s, ...]", typeNames[optionlist[i].argtype[t]], typeNames[optionlist[i].argtype[t]]);
+				    fprintf(stderr, " %s [%s, ...]", typeNames[optionlist[i].argtype[t]], typeNames[optionlist[i].argtype[t]]);
 				}
 			}
 #if SG_ENABLE_HELPSTRING
 			if( optionlist[i].helpString != NULL )
 			{
-				printf(" <%s>", optionlist[i].helpString);
+				fprintf(stderr, " <%s>", optionlist[i].helpString);
 			}
 #endif
-			if( optnum > 0 ) printf("\n");
+			if( optnum > 0 ) fprintf(stderr, "\n");
 		}
 		
 		return(0);
