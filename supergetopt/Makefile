@@ -16,7 +16,7 @@ TEST_OBJS = testSuperGetOpt.o
 all:    ${PROGS}
 
 libSuperGet.a:	${LIB_OBJS}
-	ar ruv $@ $?
+	ar rv $@ $?
 	ranlib $@
 	
 testSuperGetOpt:	${TEST_OBJS} libSuperGet.a

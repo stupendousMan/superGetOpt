@@ -6,7 +6,7 @@ SuperGetOpt is a printf-like getopt replacement for command line argument handli
 The supergetopt library makes it very easy to handle all kinds of command-line arguments in a printf()-style way. 
 All types of command-line arguments are supported and all user-supplied values are checked for type validity.
  
-If you have been searching for an easy-to-use, flexible, portable command-line and general use parser, this is it!
+If you have been searching for an easy-to-use, lightweight, flexible, portable command-line and general use parser, this is it!
 
 A Simple Example:
 =================
@@ -127,10 +127,14 @@ I've been using it for years!
     SuperGetOpt-1.0: Release February 3, 1999.
     SuperGetOpt-2.0: Release November 7, 2007.
     SuperGetOpt-2.1: Release Oct 1, 2012.
+    SuperGetOpt-2.2: Release Oct 1, 2014.
+    SuperGetOpt-2.3: Release Oct 1, 2015.
+    SuperGetOpt-2.4: Release July 1, 2016.
 
 
 Known Bugs
 ==========
 
-If extra arguments are present that both precede the first flag and come after the last flag, there is no way to easily find them. You'll know how many there are, and where the first one is, but that is all.
-None others known. Please report bugs to the author.
+Version 2.4 and greater group all flagless args and set the arg position correctly. However, for all older versions, if extra arguments are present that both precede the first flag and come after the last flag, there is no way to easily find them. You'll know how many there are, and where the first one is, but that is all.
+
+No other bugs known. Please report bugs to the author.

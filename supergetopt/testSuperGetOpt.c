@@ -81,7 +81,7 @@ int main( int argc, char *argv[] )
 	
 	
 	// Note: n = SG_ERROR_EXTRA_ARGS just means extra args, starting at argv[argPos]
-	if( helpSet || (n < 0) ) 
+	if( helpSet || (n < 0) || argc == 1) 
 	{
 		usage();
 		return(1);
