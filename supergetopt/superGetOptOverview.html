@@ -434,7 +434,7 @@ mso-bidi-font-family:"Times New Roman"'>{<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New";
 mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes">   
-</span>int n, argErr;<o:p></o:p></span></p>
+</span>int n, argPos;<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New";
 mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes">   
@@ -453,7 +453,7 @@ mso-bidi-font-family:"Times New Roman"'><span style='mso-tab-count:1'>      </sp
 
 <p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New";
 mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun: yes">   
-</span>n = superGetOpt( argc, argv, &amp;argErr, <o:p></o:p></span></p>
+</span>n = superGetOpt( argc, argv, &amp;argPos, <o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-size:10.0pt;font-family:"Courier New";
 mso-bidi-font-family:"Times New Roman"'><span style="mso-spacerun:
@@ -500,7 +500,7 @@ argument handling: fixed, variable, and argless:<o:p></o:p></span></p>
 <p class=MsoNormal><span style='font-family:Arial;mso-bidi-font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:"Courier New";mso-bidi-font-family:
-"Times New Roman"'>int superGetOpt( int argc, char *argv[], int *argErr,<o:p></o:p></span></p>
+"Times New Roman"'>int superGetOpt( int argc, char *argv[], int *argPos,<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:"Courier New";mso-bidi-font-family:
 "Times New Roman"'><span style="mso-spacerun: yes">                 </span>char
@@ -609,25 +609,25 @@ usage:<o:p></o:p></span></i></b></p>
 <p class=MsoNormal><span style='font-family:Arial;mso-bidi-font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:"Courier New";mso-bidi-font-family:
-"Times New Roman"'>int superGetOpt( argc, argv, &amp;argErr,<o:p></o:p></span></p>
+"Times New Roman"'>int superGetOpt( argc, argv, &amp;argPos,<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:"Courier New";mso-bidi-font-family:
 "Times New Roman"'><span style="mso-spacerun: yes">                
-</span>&quot;fixedKeyword %X %Y %Z&quot;, &amp;argX, &amp;argY, &amp;argZ,<o:p></o:p></span></p>
+</span>&quot;fixedKeyword %X %Y %Z&quot;, &amp;argX, &amp;argY, &amp;argZ, "help message Z",<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:"Courier New";mso-bidi-font-family:
 "Times New Roman"'><span style="mso-spacerun: yes">                
 </span>&quot;varKeyword<span style="mso-spacerun: yes">  </span>* %X&quot;,
-argArrayX, &amp;numInArrayX,<o:p></o:p></span></p>
+argArrayX, &amp;numInArrayX, "help message X",<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:"Courier New";mso-bidi-font-family:
 "Times New Roman"'><span style="mso-spacerun: yes">              </span><span
 style="mso-spacerun: yes">   </span>&quot;argLessKeyword&quot;,
-&amp;wasThisFlagOnCmdLine,<o:p></o:p></span></p>
+&amp;wasThisFlagOnCmdLine, "help message L",<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:"Courier New";mso-bidi-font-family:
 "Times New Roman"'><span style="mso-spacerun: yes">                 </span>... <span
-style='color:#339966'>// arbitrarily long list of format/argPtr pairs</span><o:p></o:p></span></p>
+style='color:#339966'>// arbitrarily long list of format/argPtr/helpMsg triplets</span><o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:"Courier New";mso-bidi-font-family:
 "Times New Roman"'><span style="mso-spacerun: yes">                
@@ -749,11 +749,11 @@ mso-bidi-font-family:"Times New Roman"'>#define SG_ERROR_TOO_MANY_ARGS -12<o:p><
 
 <p class=MsoNormal><span style='font-family:Arial;mso-bidi-font-family:"Times New Roman"'>In
 the case of an error, *</span><span style='font-family:"Courier New";
-mso-bidi-font-family:"Times New Roman"'>argErr</span><span style='font-family:
+mso-bidi-font-family:"Times New Roman"'>argPos</span><span style='font-family:
 Arial;mso-bidi-font-family:"Times New Roman"'> will be the argument number
 where the problem occurred. If there is not any error then </span><span
-style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>argErr</span><span
-style='font-family:Arial;mso-bidi-font-family:"Times New Roman"'> will be 0.<o:p></o:p></span></p>
+style='font-family:"Courier New";mso-bidi-font-family:"Times New Roman"'>argPos</span><span
+style='font-family:Arial;mso-bidi-font-family:"Times New Roman"'> will point to the first extra argument (one not associated with any commandline option).. The return value in this case will be the number of extra arguments. A ret value = 0 means no errors and no extra arguments.<o:p></o:p></span></p>
 
 <p class=MsoNormal><span style='font-family:Arial;mso-bidi-font-family:"Times New Roman"'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
 

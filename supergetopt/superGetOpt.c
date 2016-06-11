@@ -1041,7 +1041,9 @@ static int groupUnaccArgs( int argc, char *argv[], int *pLastArg, int unAccounte
 {
     int i, j, k;
     int numToBeMoved = 0;
-    int lastNonConsec = unaccountedForIndex[numUnaccGroups-1].start;
+    int lastNonConsec = 0;
+
+    if( numUnaccGroups > 0 ) lastNonConsec = unaccountedForIndex[numUnaccGroups-1].start;
     
     /* pass 1: how many unaccounted for args until the end of the command line? */
     for( i = 0 ; i < numUnaccGroups-1 ; i++ )
