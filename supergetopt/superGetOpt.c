@@ -515,7 +515,15 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 				}
 				else		/* var arg list */
 				{
-                    lastArgProcessed++;
+					if( j >= optionlist[i].numArgsMax ) 
+					{
+#if SG_DEBUG
+						fprintf(stderr, "Warning: too many commandline args supplied for option <%s>. Max=%d\n",optionlist[i].name,optionlist[i].numArgsMax);
+#endif
+						continue;
+					}
+
+					lastArgProcessed++;
 					//optionlist[i].argtype[j] = optionlist[i].argtype[0];
 					switch( optionlist[i].argtype[0] )
 					{
