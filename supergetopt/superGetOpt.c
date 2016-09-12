@@ -1081,7 +1081,7 @@ static int groupUnaccArgs( int argc, char *argv[], int *pLastArg, int unAccounte
         }
     }
     
-    *pLastArg -= numToBeMoved;
+    if( pLastArg != NULL ) *pLastArg -= numToBeMoved;
 
     return 0;
 }
