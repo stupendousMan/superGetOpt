@@ -652,7 +652,7 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 #endif
         if( argv[0][0] == '-' || argv[0][0] == '+' || argv[0][0] == '=' )
         {
-#if (SG_DEBUG > 1)
+#if (SG_DEBUG > 0)
             fprintf(stderr,"option not found at argv=%s left=%d lastProc=%d lastProcSuc=%d\n",argv[0],argsleft,lastArgProcessed,lastArgProcessedSuccessfully);
             //fprintf(stderr,"User did not supply option name <%s>\n",optionlist[lastFlag].name);
 #endif
