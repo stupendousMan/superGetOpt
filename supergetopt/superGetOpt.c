@@ -85,6 +85,16 @@ typedef union
     float *f;
     double *d;
     char **string;
+#ifdef __cplusplus
+    std::vector<char> *v;
+    std::vector<char> *vc;
+    std::vector<short> *vh;
+    std::vector<int> *vi;
+    std::vector<unsigned int> *vui;
+    std::vector<float> *vf;
+    std::vector<double> *vd;
+    std::vector<const char *> *vcp;
+#endif
 } PANYTYPE;
 
 struct optionlist_s 
@@ -210,7 +220,7 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
     char *optstring[MAXOPTS+1] = {0};
     static int optnum;
     int argsleft;
-    register int i,j;
+    int i,j;
     int x;
     int good;
     int found = 0;
@@ -220,6 +230,9 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
     int lastArgProcessed = 0;
     int lastArgProcessedSuccessfully = 0;
     //int lastFlag = 0;
+    #ifdef __cplusplus
+    bool bIsVector = false;
+    #endif
     
     *pUnAccountedFor = 0; // args not associated with detected flags
     
@@ -515,7 +528,15 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
                 }
                 else        /* var arg list */
                 {
-                    if( j >= optionlist[i].numArgsMax ) 
+#ifdef __cplusplus
+                    if (optionlist[i].numArgsMax == 0) {
+                        bIsVector = true;
+                    } else {
+                        bIsVector = false;
+                    }
+#endif
+
+                    if( j >= optionlist[i].numArgsMax && optionlist[i].numArgsMax > 0) 
                     {
 #if SG_DEBUG
                         fprintf(stderr, "Warning: too many commandline args supplied for option <%s>. Max=%d\n",optionlist[i].name,optionlist[i].numArgsMax);
@@ -528,42 +549,119 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
                     switch( optionlist[i].argtype[0] )
                     {
                         case CHAR: 
-                            optionlist[i].argptr[0].c[j] = myread_char(argv[0],&good); 
+#ifdef __cplusplus
+                            if (bIsVector) {
+                                optionlist[i].argptr[0].vc->push_back(myread_char(argv[0],&good));
+                            } 
+                            else 
+#endif
+                            {
+                                optionlist[i].argptr[0].c[j] = myread_char(argv[0],&good); 
+                            }
                             break;
                         case SHORT: 
-                            optionlist[i].argptr[0].h[j] = myread_short(argv[0],&good); 
+#ifdef __cplusplus
+                            if (bIsVector) {
+                                myread_short(argv[0],&good);
+                                if (good == 0) {
+                                    optionlist[i].argptr[0].vh->push_back(myread_short(argv[0],&good));
+                                }
+                            } 
+                            else 
+#endif
+                            {
+                                optionlist[i].argptr[0].h[j] = myread_short(argv[0],&good); 
+                            }
                             break;
                         case INT: 
-                            optionlist[i].argptr[0].i[j] = myread_int(argv[0],&good); 
+#ifdef __cplusplus
+                            if (bIsVector) {
+                                myread_int(argv[0],&good);
+                                if (good == 0) {
+                                    optionlist[i].argptr[0].vi->push_back(myread_int(argv[0],&good));
+                                }
+                            } 
+                            else 
+#endif
+                            {
+                                printf("not a vector %d\n", myread_int(argv[0],&good));
+                                optionlist[i].argptr[0].i[j] = myread_int(argv[0],&good);
+                            }
                             break;
                         case UINT:
-                            optionlist[i].argptr[0].ui[j] = myread_uint(argv[0],&good);
+#ifdef __cplusplus
+                            if (bIsVector) {
+                               myread_uint(argv[0],&good);
+                                if (good == 0) {
+                                    optionlist[i].argptr[0].vui->push_back(myread_uint(argv[0],&good));
+                                }
+                            } 
+                            else 
+#endif
+                            {
+                                optionlist[i].argptr[0].ui[j] = myread_uint(argv[0],&good);
+                            }
                             break;
                         case HEX:
-                            optionlist[i].argptr[0].ui[j] = myread_hex(argv[0],&good);
+#ifdef __cplusplus
+                            if (bIsVector) {
+                                myread_hex(argv[0],&good);
+                                if (good == 0) {
+                                    optionlist[i].argptr[0].vui->push_back(myread_hex(argv[0],&good));
+                                }
+                            } 
+                            else 
+#endif
+                            {
+                                optionlist[i].argptr[0].ui[j] = myread_hex(argv[0],&good);
+                            }
                             break;
                         case FLOAT:
-                            optionlist[i].argptr[0].f[j] = myread_float(argv[0],&good); 
+#ifdef __cplusplus
+                            if (bIsVector) {
+                                optionlist[i].argptr[0].vf->push_back(myread_float(argv[0],&good));
+                            } 
+                            else 
+#endif
+                            {
+                                optionlist[i].argptr[0].f[j] = myread_float(argv[0],&good);
+                            }
                             break;
                         case DOUBLE: 
-                            optionlist[i].argptr[0].d[j] = myread_double(argv[0],&good); 
+#ifdef __cplusplus
+                            if (bIsVector) {
+                                optionlist[i].argptr[0].vd->push_back(myread_double(argv[0],&good));
+                            } 
+                            else 
+#endif
+                            {
+                                optionlist[i].argptr[0].d[j] = myread_double(argv[0],&good);
+                            }
                             break;
                         case STRING: 
                             x = check_if_option(argv[0], optionlist, optnum);
-                             if( x >= 0 ) /* end of var list */
+                            if( x >= 0 ) /* end of var list */
                             {
                                 good = -2;
                             }
                             else
                             {    
                                 good = 0;
-                                if( j < optionlist[i].numArgsMax )
+#ifdef __cplusplus
+                                if (bIsVector) {
+                                    optionlist[i].argptr[0].vcp->push_back(argv[0]);
+                                } 
+                                else 
+#endif
                                 {
-                                    optionlist[i].argptr[0].string[j] = argv[0]; 
-                                }
-                                else
-                                {
-                                    good = -3;
+                                    if( j < optionlist[i].numArgsMax && optionlist[i].numArgsMax > 0)
+                                    {
+                                        optionlist[i].argptr[0].string[j] = argv[0]; 
+                                    }
+                                    else
+                                    {
+                                        good = -3;
+                                    }
                                 }
                             } 
                                 break;
@@ -700,7 +798,9 @@ static int parse_string(char *s, struct optionlist_s *option, int *noName)
     int offset = 0;
     char *pN, *pM;
 
-    //printf("Called parse_string: s = <%s>\n", s);
+    if (s == NULL) return(0);
+
+    // printf("Called parse_string: s = <%s>\n", s);
     
     len = strlen( s );
 
@@ -809,7 +909,7 @@ static int parse_format(char *s, int *argtypes)
     }
 
     len = (int) strlen( sp );
-    scopy = malloc( len + 1 );
+    scopy = (char *) malloc( len + 1 );
     strcpy( scopy, sp );
     //scopy = (char *) strdup( sp ); // eliminate strdup call
 
@@ -1034,7 +1134,7 @@ static double myread_double(char *s, int *flag)
 static int check_if_option(char *s, struct optionlist_s *optionlist, int numopts)
 {
 
-    register int i;
+    int i;
 
     for( i = 0 ; i < numopts ; i++ )
     {

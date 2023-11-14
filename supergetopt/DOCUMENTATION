@@ -34,9 +34,9 @@ This function has the following syntax for the three main types of arg:
 fixed, variable, and argless:
 
      int superGetOpt( int argc, char *argv[], int *argErr,
-                      "fixedFlagA formatA", &arg1, &arg2,...,
-                      "varFlagB  *formatB", argArray, &numInArray,
-                      "argLessFlag", &wasThisFlagSuppliedOnCmdLine,
+                      "fixedFlagA formatA", &arg1, &arg2,..., "help msg A",
+                      "varFlagB  *formatB", argArray, &numInArray,  "help msg B",
+                      "argLessFlag", &wasThisFlagSuppliedOnCmdLine, "help msg C",
                       ... /* arbitrarily long list of format/argPtr pairs */
                       NULL); /* NULL is used to terminate the argument list */
 
@@ -53,6 +53,16 @@ Allowable formats are:
         %lf double
         %x hex
         %s char * string
+
+2.1.0: C++ Note: 
+
+You may use a C++ vector as long as you set the size to zero. Example:
+    vector<float> myVec{}; // type must match what you use in format string
+    int numv = 0;  // this must be 0!!!!
+    supergetopt(...,
+        "--vector *%f", &myVec, &numv, "help vector",
+        ...
+    );
 
 2.1.1: Fixed number of arguments to a flag
 

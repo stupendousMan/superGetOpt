@@ -45,6 +45,10 @@ int superParseOpt( int argc, char **argv, int *lastArg, ... );
 }
 #endif
 
+#ifdef __cplusplus
+#include <vector>
+#endif
+
 /* control SuperGetOpt API and behaviour */
 #define SG_ENABLE_HELPSTRING 1 // if enabled, each flag requires a helpString parameter from the caller
 #define SG_GROUP_UNACC_ARGS 1 /* group all unaccounted for arguments so it is easy to process them */

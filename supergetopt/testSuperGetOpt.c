@@ -41,6 +41,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 **********************************************************************/
 
 #include <stdio.h>
+#ifdef __cplusplus
+#include <vector>
+#endif
+
 #include "supergetopt.h"
 
 static void usage();
@@ -61,19 +65,33 @@ int main( int argc, char *argv[] )
 	
 	float farray[20];
 	int numf = 20; // must be set to max initially -- will be overwritten with actual number
+	int iarray[20];
+	int numi = 20; // must be set to max initially -- will be overwritten with actual number
 	char *sarray[10] = {0};
 	int nums = 10;
 	int helpSet = 0;
-	
+#ifdef __cplusplus
+    std::vector<int> myVecI{};
+    std::vector<const char *> myVecS{};
+    std::vector<float> myVecF{};
+    int numv = 0;
+#endif
+
 /* example call to supergetopt. If called with NULL argv, will print usage info */
 	
 	n = superGetOpt(argc,argv, &argPos,
 			"-puffy %c %lf %s %d",&c, &lf, &s, &d, "help message 1",
 			"-eminem %hd %f", &h, &f, "help message 2",
 			"-e %d %d", &d1, &d2, "help message 3",
-			"-vanna *%f", farray, &numf, "help message 4",
+			"-vfloat *%f", farray, &numf, "help message 4.f",
+			"-vint *%d", iarray, &numi, "help message 4.i",
 			"-stringo *%s", sarray, &nums, "help message 5",
 			"-what %s", &ss, "help message 6",
+#ifdef __cplusplus
+            "--ivector *%d", &myVecI, &numv, "help msg vector i",
+            "--svector *%s", &myVecS, &numv, "help msg vector s",
+            "--fvector *%f", &myVecF, &numv, "help msg vector f",
+#endif
 			"-help", &helpSet, "to get this help message",
 			(char * ) 0 ); 
 
@@ -99,9 +117,24 @@ int main( int argc, char *argv[] )
 	for( i = 0, printf("stringo: ") ; i < nums ; i++ )
 		printf("<%s> ", sarray[i]);
 	printf("\n");
-	for( i = 0, printf("vanna: ") ; i < numf ; i++ )
+	for( i = 0, printf("vfloat: ") ; i < numf ; i++ )
 		printf("<%f> ", farray[i]);
 	printf("\n");
+	for( i = 0, printf("vint: ") ; i < numi ; i++ )
+		printf("<%d> ", iarray[i]);
+	printf("\n");
+
+#ifdef __cplusplus
+    for (int x : myVecI) {
+        printf("vector int = %d\n", x);
+    }
+    for (const char *s : myVecS) {
+        printf("vector string = %s\n", s);
+    }
+    for (float f : myVecF) {
+        printf("vector float = %f\n", f);
+    }
+#endif
 
 	
 	return(0);
