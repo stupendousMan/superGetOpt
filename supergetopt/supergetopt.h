@@ -38,6 +38,9 @@ extern "C" {
 // for parsing commandline args
 int superGetOpt( int argc, char **argv, int *lastArg, ... );
 
+// get usage
+void usage();
+
 // for parsing args in a file, for instance, where argv[0] isn't ignored
 int superParseOpt( int argc, char **argv, int *lastArg, ... );
 
@@ -67,5 +70,7 @@ int superParseOpt( int argc, char **argv, int *lastArg, ... );
 #define SG_ERROR_MIXED_TYPES_IN_VAR -10
 #define SG_ERROR_ZERO_LEN_OPTION -11
 #define SG_ERROR_TOO_MANY_ARGS -12
+#define SG_ERROR_UNKNOWN_ARG -13
+
 
 #endif

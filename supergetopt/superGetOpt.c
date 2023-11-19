@@ -176,7 +176,7 @@ int superGetOpt( int argc, char **argv, int *lastArg, ... )
 #endif
     
     if( usageCall == 1 && lastArg != NULL && *lastArg == 1 ) n = SG_ERROR_PRINT_USAGE;
-    else if( unAccountedFor && n != SG_ERROR_MISSING_ARG )
+    else if( unAccountedFor && n != SG_ERROR_MISSING_ARG  && n != SG_ERROR_UNKNOWN_ARG)
     {
         n = unAccountedFor; // not necessarily an error, just unaccounted for args
     }
@@ -751,10 +751,10 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
         if( argv[0][0] == '-' || argv[0][0] == '+' || argv[0][0] == '=' )
         {
 #if (SG_DEBUG > 0)
-            fprintf(stderr,"option not found at argv=%s left=%d lastProc=%d lastProcSuc=%d\n",argv[0],argsleft,lastArgProcessed,lastArgProcessedSuccessfully);
+            fprintf(stderr,"unknown option at argv=%s left=%d lastProc=%d lastProcSuc=%d\n",argv[0],argsleft,lastArgProcessed,lastArgProcessedSuccessfully);
             //fprintf(stderr,"User did not supply option name <%s>\n",optionlist[lastFlag].name);
 #endif
-            return(SG_ERROR_INCORRECT_ARG);
+            return(SG_ERROR_UNKNOWN_ARG);
         }
         
         lastArgProcessed++;
@@ -1186,3 +1186,8 @@ static int groupUnaccArgs( int argc, char *argv[], int *pLastArg, int unAccounte
     return 0;
 }
 
+void usage()
+{
+	int argErr;
+	superGetOpt(0, NULL, &argErr, NULL); // prints help info
+}
