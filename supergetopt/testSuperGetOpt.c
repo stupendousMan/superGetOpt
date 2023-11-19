@@ -47,7 +47,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "supergetopt.h"
 
-static void usage();
+//static void usage();
 
 int main( int argc, char *argv[] )
 {
@@ -74,7 +74,7 @@ int main( int argc, char *argv[] )
     std::vector<int> myVecI{};
     std::vector<const char *> myVecS{};
     std::vector<float> myVecF{};
-    int numv = 0;
+    int numv = 0; // !!! Note: This must = 0 for use with vectors !!!
 #endif
 
 /* example call to supergetopt. If called with NULL argv, will print usage info */
@@ -123,6 +123,8 @@ int main( int argc, char *argv[] )
 	for( i = 0, printf("vint: ") ; i < numi ; i++ )
 		printf("<%d> ", iarray[i]);
 	printf("\n");
+    
+    printf("What = <%s>\n", ss);
 
 #ifdef __cplusplus
     for (int x : myVecI) {
@@ -140,9 +142,12 @@ int main( int argc, char *argv[] )
 	return(0);
 }
 
+#if 0
 static void usage()
 {
 	int argErr;
 	
 	superGetOpt(0,NULL, &argErr, NULL); // prints help info
 }
+#endif
+
