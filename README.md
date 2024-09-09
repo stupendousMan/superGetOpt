@@ -130,6 +130,7 @@ I've been using it for years!
     SuperGetOpt-2.2: Release Oct 1, 2014.
     SuperGetOpt-2.3: Release Oct 1, 2015.
     SuperGetOpt-2.4: Release July 1, 2016.
+    SuperGetOpt-2.5: Release Nov, 2023.: Added support for C++ vectors.
 
 
 Known Bugs
