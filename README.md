@@ -40,7 +40,7 @@ This function has the following syntax for the three main types of command line 
     int superGetOpt( int argc, char *argv[], int *argPos,
                      char *fixedFormat, *arg1, *arg2,..., "Help string fixed",
                      char *varFormat, argArray[], int *numInArray, "Help string var",
-                     char *argLessFormat, int *wasThisFlagOnCmdLine, "Help string falgs with no args",
+                     char *argLessFormat, int *wasThisFlagOnCmdLine, "Help string flags with no args",
                      // arbitrarily long list of format/argPtr/helpString triplets
                      NULL); // NULL is used to terminate the arg list
 
