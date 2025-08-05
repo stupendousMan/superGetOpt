@@ -57,13 +57,14 @@ enum
     INT,
     UINT,
     HEX,
+    LINT,
     FLOAT,
     DOUBLE,
     STRING,
     NUMTYPES
 };
 
-const char typeNames[NUMTYPES][10] = { "char", "short", "int", "uint", "hex", "float", "double", "string" };
+const char typeNames[NUMTYPES][10] = { "char", "short", "int", "uint", "hex", "lint", "float", "double", "string" };
 
 typedef union
 {
@@ -71,6 +72,7 @@ typedef union
     short h;
     int i;
     unsigned int ui; // holds hex and unsigned int too
+    long li;
     float f;
     double d;
     char *string;
@@ -82,6 +84,7 @@ typedef union
     short *h;
     int *i;
     unsigned int *ui; // holds hex and unsigned int too
+    long *li;
     float *f;
     double *d;
     char **string;
@@ -91,6 +94,7 @@ typedef union
     std::vector<short> *vh;
     std::vector<int> *vi;
     std::vector<unsigned int> *vui;
+    std::vector<int> *vli;
     std::vector<float> *vf;
     std::vector<double> *vd;
     std::vector<const char *> *vcp;
@@ -123,6 +127,7 @@ static short myread_short(char *s, int *flag);
 static int myread_int(char *s, int *flag);
 static unsigned int myread_uint(char *s, int *flag);
 static unsigned int myread_hex(char *s, int *flag);
+static long myread_lint(char *s, int *flag);
 static float myread_float(char *s, int *flag);
 static double myread_double(char *s, int *flag);
 static int parse_string(char *s, struct optionlist_s *option, int *noName);
@@ -281,6 +286,9 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
                 case HEX:
                     optionlist[optnum].argptr[i].ui = va_arg(ap, unsigned int *);
                     break;
+                case LINT:
+                    optionlist[optnum].argptr[i].li = va_arg(ap, long *);
+                    break;
                 case FLOAT: 
                     optionlist[optnum].argptr[i].f = va_arg(ap, float *);
                     break;
@@ -317,6 +325,10 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
                 case HEX:
                     optionlist[optnum].argptr[i].ui = va_arg(ap, unsigned int *);
                     if( optionlist[optnum].argptr[i].ui == NULL ) return( SG_ERROR_MISSING_ARG );
+                    break;
+                case LINT:
+                    optionlist[optnum].argptr[i].li = va_arg(ap, long *);
+                    if( optionlist[optnum].argptr[i].li == NULL ) return( SG_ERROR_MISSING_ARG );
                     break;
                 case FLOAT: 
                     optionlist[optnum].argptr[i].f = va_arg(ap, float *);
@@ -473,6 +485,10 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
                             //printf("got hex: %x good=%d\n",optionlist[i].argval[j].ui,good);
                             *optionlist[i].argptr[j].ui = optionlist[i].argval[j].ui;
                             break;
+                        case LINT:
+                            //printf("got long: %x good=%d\n",optionlist[i].argval[j].ui,good);
+                            *optionlist[i].argptr[j].li = optionlist[i].argval[j].li;
+                            break;
                         case FLOAT: 
                             *optionlist[i].argptr[j].f = optionlist[i].argval[j].f;
                             break;
@@ -614,6 +630,20 @@ static int superParseInternal( int argc, char **argv, int usageCall, int *lastAr
 #endif
                             {
                                 optionlist[i].argptr[0].ui[j] = myread_hex(argv[0],&good);
+                            }
+                            break;
+                        case LINT:
+#ifdef __cplusplus
+                            if (bIsVector) {
+                                myread_lint(argv[0],&good);
+                                if (good == 0) {
+                                    optionlist[i].argptr[0].vli->push_back(myread_lint(argv[0],&good));
+                                }
+                            } 
+                            else 
+#endif
+                            {
+                                optionlist[i].argptr[0].li[j] = myread_lint(argv[0],&good);
                             }
                             break;
                         case FLOAT:
@@ -941,6 +971,9 @@ static int parse_format(char *s, int *argtypes)
         if( strstr(string, "%d") != NULL )
             argtypes[i] = (int) INT;
         else
+        if( strstr(string, "%ld") != NULL )
+            argtypes[i] = (int) LINT;
+        else
         if( strstr(string, "%s") != NULL )
             argtypes[i] = (int) STRING;
         else
@@ -1027,6 +1060,16 @@ static ANYTYPE getval(char *s, int type, int *flag)
                 return( value );
             }
             else return( value );
+        case LINT:
+            if( sscanf( s, "%ld", &value.li ) != 1 )
+            {
+#if SG_DEBUG
+                fprintf(stderr," Getval: Bad argument. Expected longeger\n");
+#endif
+                *flag = -1;
+                return( value );
+            }
+            else return( value );
         case FLOAT:
             if( sscanf( s, "%f", &value.f ) != 1 )
             {
@@ -1105,6 +1148,16 @@ static unsigned int myread_hex(char *s, int *flag)
     unsigned int x;
     *flag = 0;
     if( sscanf( s, "%x", &x ) != 1 )
+    {
+        *flag = -1;
+    }
+    return( x );
+}
+static long myread_lint(char *s, int *flag)
+{
+    long x;
+    *flag = 0;
+    if( sscanf( s, "%ld", &x ) != 1 )
     {
         *flag = -1;
     }

@@ -68,6 +68,7 @@ int main( int argc, char *argv[] )
 	int iarray[20];
 	int numi = 20; // must be set to max initially -- will be overwritten with actual number
 	char *sarray[10] = {0};
+    long longint;
 	int nums = 10;
 	int helpSet = 0;
 #ifdef __cplusplus
@@ -92,6 +93,7 @@ int main( int argc, char *argv[] )
             "--svector *%s", &myVecS, &numv, "help msg vector s",
             "--fvector *%f", &myVecF, &numv, "help msg vector f",
 #endif
+            "-longo %ld", &longint, "long int",
 			"-help", &helpSet, "to get this help message",
 			(char * ) 0 ); 
 
@@ -123,6 +125,8 @@ int main( int argc, char *argv[] )
 	for( i = 0, printf("vint: ") ; i < numi ; i++ )
 		printf("<%d> ", iarray[i]);
 	printf("\n");
+    
+    printf("long int = %ld\n", longint);
     
     printf("What = <%s>\n", ss);
 
