@@ -68,7 +68,7 @@ int main( int argc, char *argv[] )
 	int iarray[20];
 	int numi = 20; // must be set to max initially -- will be overwritten with actual number
 	char *sarray[10] = {0};
-    long longint;
+    long longint = 10;
 	int nums = 10;
 	int helpSet = 0;
 #ifdef __cplusplus
